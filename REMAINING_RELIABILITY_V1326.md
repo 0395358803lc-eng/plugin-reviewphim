@@ -29,9 +29,12 @@ Plugin/App identity and connector configuration are unchanged.
 
 - Before: 362 passed, 4 Windows symlink skips, 25 subtests; 6.93 seconds.
 - After: 378 passed, 4 Windows symlink skips, 25 subtests; 9.00 seconds.
+- Linux: 381 passed, 1 Windows-only junction skip, 25 subtests; 6.40 seconds.
+  The separate four-test symlink run passed all four without skips in 0.13 s.
+  [CI evidence](https://github.com/0395358803lc-eng/plugin-reviewphim/actions/runs/44700525759).
 - Windows junction containment: passed with real junction creation, no security
-  configuration changes. Four symlink tests are additionally required by the
-  Linux GitHub Actions job without skips.
+  configuration changes. Together the Windows and Linux runs execute every
+  platform-specific path-containment regression.
 - Existing interruption, durable-ledger/snapshot-crash recovery, bounded retries
   and targeted revision regressions all pass.
 - Tests use real local codec fixtures; they are not user acceptance of a film.
