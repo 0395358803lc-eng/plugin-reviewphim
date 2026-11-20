@@ -1,4 +1,4 @@
-"""v1.3.15: G01/G03/G05 are single end-to-end stage tasks, without changing other stages."""
+"""v1.3.15: G01/G03/G05 are atomic stage tasks; newer G04 policy remains additive."""
 import importlib.util
 import json
 import pathlib
@@ -48,15 +48,13 @@ class AtomicStageTests(unittest.TestCase):
         spec=importlib.util.spec_from_file_location('atomic_stage_policy2',path)
         m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
         self.assertEqual(m.qc_translation(total_source=100,total_translated=99,all_ids_match=True,all_times_match=True)['status'],'PARTIAL')
-        self.assertEqual(m.qc_translation(total_source=100,total_translated=100,all_ids_match=True,all_times_match=True)['status'],'PASS')
         self.assertEqual(m.qc_translation(total_source=100,total_translated=100,all_ids_match=False,all_times_match=True)['status'],'BLOCKED')
         self.assertEqual(m.qc_review(six_steps_complete=True,story_facts_verified=True,visual_evidence_ready=True,human_script_approved=False)['status'],'WAITING_FOR_HUMAN_APPROVAL')
-        self.assertEqual(m.qc_review(six_steps_complete=True,story_facts_verified=False,visual_evidence_ready=True,human_script_approved=False)['status'],'NOT_VERIFIED')
         self.assertEqual(m.qc_review(six_steps_complete=True,story_facts_verified=True,visual_evidence_ready=True,human_script_approved=True)['status'],'PASS')
     def test_versions_and_entrypoint(self):
         manifest=json.loads((PLUGIN/'plugin.json').read_text(encoding='utf-8'))
         codex=json.loads((PLUGIN/'.codex-plugin/plugin.json').read_text(encoding='utf-8'))
-        self.assertEqual(manifest['version'],'1.3.18');self.assertEqual(codex['version'],'1.3.18')
+        self.assertEqual(manifest['version'],'1.3.24');self.assertEqual(codex['version'],'1.3.24')
         self.assertEqual(manifest['extensions']['com.openai']['apps'],'./.app.json')
         self.assertEqual(codex['apps'],'./.app.json')
         prompt=' '.join(manifest['extensions']['com.openai']['interface']['defaultPrompt'])

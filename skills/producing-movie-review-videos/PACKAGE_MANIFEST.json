@@ -1,120 +1,95 @@
 {
   "package": "review-phim",
-  "version": "1.3.20",
+  "version": "1.3.24",
   "source_plugin_id": "plugins_6afb6aad3c788191aa502d68b438c937",
-  "preserved_release": "pluginrel_6affa945421081919fe187c8c3456e04",
+  "preserved_release": "pluginrel_6affd61585208191b6c3984cfe26e060",
   "scope": "changed_files_only_overlay",
-  "notes": "Add mandatory short video/audio ZIP handoff with actual ChatGPT media inspection, SHA-256 and honest verified download links/fallback; preserve existing G01-G15, G11A/B and all old outputs. The archive contains only files changed in overlay and is NOT a full plugin export.",
+  "notes": "Manual ChatGPT thumbnail download+user copy to approved JOB_DIR; file/hash/format QC gate before G12, no automatic transfer, preserve human approval and legacy projects.",
   "files": [
     {
       "path": ".codex-plugin/plugin.json",
-      "bytes": 8067,
-      "sha256": "8741edd85f7c349e85ca4080809d18b2fbc3da8d32f1be7118f0400d93d5efee"
+      "bytes": 8227,
+      "sha256": "6be5df4c9737670631b83fa574f4240857acb6f2e45561c7cb51fe633a174719"
     },
     {
       "path": "plugin.json",
-      "bytes": 8254,
-      "sha256": "3d1ca4e4a3e5a67cf064591a55aabc3eb3c4abf7bb54f9af78edb86fc081fa6e"
+      "bytes": 8414,
+      "sha256": "183c83e18744198d5eba487385462b82c9c1e67be65e8064204d460b45bd02b7"
+    },
+    {
+      "path": "skills/one-click-review-execution/SKILL.md",
+      "bytes": 6342,
+      "sha256": "a9326ece38cc9cf13a2b5aac264c70a8d0f589c8247c68c8ae0c193861c2fef3"
     },
     {
       "path": "skills/producing-movie-review-videos/SKILL.md",
-      "bytes": 11919,
-      "sha256": "497addf3ffe1dd52e149a955e4792e4e35a34910053077e2b8723faab081b65b"
+      "bytes": 18067,
+      "sha256": "dd3c4e542b0127985002c70abcba673f7d7c1e3c4958b415c9e9ea47bf8fd7fb"
+    },
+    {
+      "path": "skills/producing-movie-review-videos/references/FULL_WORKFLOW_INTEGRITY_V1323.md",
+      "bytes": 11125,
+      "sha256": "f94d6b9a9a52c0f7e5a58d70009841c8c835881a09d9521f51b8a815d912e271"
     },
     {
       "path": "skills/producing-movie-review-videos/references/INTRO_CARD_INTEGRATION_V1319.md",
-      "bytes": 3008,
-      "sha256": "5d92ca87b2b820b5c844f87c1dea5d5f383366508ed3036fc44075c46f985614"
+      "bytes": 3758,
+      "sha256": "f0013d4ecd17c0ef0b1e919e83d927200e381e8c08704dfb4af598d5c6d0a3fb"
     },
     {
-      "path": "skills/producing-movie-review-videos/references/MEDIA_EVIDENCE_HANDOFF_V1320.md",
-      "bytes": 10611,
-      "sha256": "f638099f2895267d519d5c508e9a36aa31e7783e6c0b34178c45c2fb16b66095"
+      "path": "skills/producing-movie-review-videos/references/MANUAL_THUMBNAIL_HANDOFF_V1324.md",
+      "bytes": 7314,
+      "sha256": "611d359034b599389711d60728e949ceed592c5ca155118b5aa552d6895275b0"
     },
     {
       "path": "skills/producing-movie-review-videos/references/THUMBNAIL_INTRO_POLICY_V1319.md",
-      "bytes": 4240,
-      "sha256": "6707adbab28aa404cce53dde618913b48fadb58a458c480e71e8743c5781b237"
+      "bytes": 5270,
+      "sha256": "6714daeb885625a74c501455599da28a4c9efd4b2c23b8491242db755eefff84"
     },
     {
-      "path": "skills/producing-movie-review-videos/references/YOUTUBE_METADATA_POLICY_V1319.md",
-      "bytes": 3091,
-      "sha256": "429a1085f63fe4489ecc04649f081a9fb1324d5a18e3cbdc8d5a0c6418d67c4a"
+      "path": "skills/producing-movie-review-videos/tests/test_atomic_stages_v1315.py",
+      "bytes": 4929,
+      "sha256": "fa04d8155fee0c24b7bbf2db1d076eb1b56022fa6a09275e8720ee5cfa324cf3"
     },
     {
-      "path": "skills/producing-movie-review-videos/tests/.pytest_cache/.gitignore",
-      "bytes": 37,
-      "sha256": "3ed731b65d06150c138e2dadb0be0697550888a6b47eb8c45ecc9adba8b8e9bd"
+      "path": "skills/producing-movie-review-videos/tests/test_manual_thumbnail_handoff_v1324.py",
+      "bytes": 9534,
+      "sha256": "5b9c2d5c12384bddeaa1852b6e6ae69ab1901b69ff60527d83376dbbfa92a9c7"
     },
     {
-      "path": "skills/producing-movie-review-videos/tests/.pytest_cache/CACHEDIR.TAG",
-      "bytes": 191,
-      "sha256": "37dc88ef9a0abeddbe81053a6dd8fdfb13afb613045ea1eb4a5c815a74a3bde4"
-    },
-    {
-      "path": "skills/producing-movie-review-videos/tests/.pytest_cache/README.md",
-      "bytes": 302,
-      "sha256": "73fd6fccdd802c419a6b2d983d6c3173b7da97558ac4b589edec2dfe443db9ad"
-    },
-    {
-      "path": "skills/producing-movie-review-videos/tests/.pytest_cache/v/cache/lastfailed",
-      "bytes": 2,
-      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
-    },
-    {
-      "path": "skills/producing-movie-review-videos/tests/.pytest_cache/v/cache/nodeids",
-      "bytes": 3147,
-      "sha256": "a15e556bcdd0334db31ed1e2e1763c16c36f7e8bd48854cbb282229f601a18d2"
-    },
-    {
-      "path": "skills/producing-movie-review-videos/tests/test_intro_card_integration_v1319.py",
-      "bytes": 1230,
-      "sha256": "b15d0bacad55bb57f84dd1f8e6f3065393c370c10042861c36654e78ec082ef0"
-    },
-    {
-      "path": "skills/producing-movie-review-videos/tests/test_media_evidence_handoff_v1320.py",
-      "bytes": 6999,
-      "sha256": "153197455fa4e53834ad15fc271e23a1a3bec08d94953fbb7acc09ff71c510bc"
-    },
-    {
-      "path": "skills/producing-movie-review-videos/tests/test_publish_workflow_state_v1319.py",
-      "bytes": 1578,
-      "sha256": "0515c696c82d553ea776f003e19fb2898aa6b644917720902f79585c27c27a3c"
-    },
-    {
-      "path": "skills/producing-movie-review-videos/tests/test_thumbnail_intro_policy_v1319.py",
-      "bytes": 2384,
-      "sha256": "0cc5a5e6d4b17d14b06a62ecd7626b9cc4d56ada4ac46c5bbc8ff11a18c49148"
+      "path": "skills/producing-movie-review-videos/tests/test_story_first_v1313.py",
+      "bytes": 2364,
+      "sha256": "91fa207535591a909407611eebb71634fc29228e4640c005915971933659fa35"
     },
     {
       "path": "skills/producing-movie-review-videos/tests/test_v1319_manifest_contract.py",
       "bytes": 1249,
-      "sha256": "fc92f500334c72b657c26e29da9e2156ae0fd5035846f73f2a52ee3ae3ddc2e4"
+      "sha256": "ddaa49bf4f639f97f02c6e160571ca5b300b468ece3dc6789e129865e2fe3342"
     },
     {
-      "path": "skills/producing-movie-review-videos/tests/test_youtube_metadata_policy_v1319.py",
-      "bytes": 1594,
-      "sha256": "2ee26fc356ec6b53ef9510a0ebd54c4bcafab608671c3a3b86cf61febb79a710"
+      "path": "skills/producing-movie-review-videos/tests/test_whole_film_transcript_v1314.py",
+      "bytes": 4251,
+      "sha256": "2e18ffe8a1473851df2d34fbbd656c59a41c5ff19d2cf1705bdf7e96a04d0e5e"
     },
     {
-      "path": "skills/producing-movie-review-videos/tools/media_evidence_handoff.py",
-      "bytes": 12364,
-      "sha256": "997583d726c984bb0964b63130ba2ff710c68a81995dbe6bcbfb43d5cbe213fa"
+      "path": "skills/producing-movie-review-videos/tests/test_workflow_integrity_v1323.py",
+      "bytes": 10906,
+      "sha256": "9451a66147547eb5907d7fe8a31474ffca400f9bb6ba3ee731a0fd5bb6f3dc20"
     },
     {
-      "path": "skills/producing-movie-review-videos/tools/publish_workflow_state.py",
-      "bytes": 1392,
-      "sha256": "ea1a2741c15547ac9f48ad7a5dde3d17d16df7610e798fbfb0038701c13b0a3b"
+      "path": "skills/producing-movie-review-videos/tests/test_workflow_v1312_consistency.py",
+      "bytes": 3271,
+      "sha256": "bf6c08c334251e3f3e4d7b0e160eadb15bb45279a7951446692c579a7b3881be"
     },
     {
-      "path": "skills/producing-movie-review-videos/tools/thumbnail_intro_policy.py",
-      "bytes": 3618,
-      "sha256": "c030f3db9115bd59d1cb828c8301a9e6e365e74a448103f4a50be8be56ca9e8f"
+      "path": "skills/producing-movie-review-videos/tools/manual_thumbnail_handoff_v1324.py",
+      "bytes": 6243,
+      "sha256": "c784713de509d449b70405787e3178c9d4d4ad542ac54cc2c1de1238026a1dbb"
     },
     {
-      "path": "skills/producing-movie-review-videos/tools/youtube_metadata_policy.py",
-      "bytes": 1881,
-      "sha256": "29735c17da4c4bfced2ae9cb0dc0ea9f18dcdc074274ff29e5ca64c180c1db38"
+      "path": "skills/producing-movie-review-videos/tools/workflow_integrity_v1323.py",
+      "bytes": 15477,
+      "sha256": "741947dc2091152d7f267cac79e504926551f3423f05bc3f5fdf51340aa9ddc2"
     }
   ]
 }

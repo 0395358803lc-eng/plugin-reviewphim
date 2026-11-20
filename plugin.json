@@ -1,7 +1,7 @@
 {
   "name": "review-phim",
-  "version": "1.3.20",
-  "description": "REVIEW_PHIM v1.3.20: bounded short video/audio ZIP evidence handoff with verified download links, actual ChatGPT visual/audio inspection and non-fabricated QC; retains YouTube metadata + thumbnail intro.",
+  "version": "1.3.24",
+  "description": "REVIEW_PHIM v1.3.24: ChatGPT thumbnail generation with user-managed download/copy to approved JOB_DIR, verified file handoff and unchanged gated intro/QC workflow.",
   "author": {
     "name": "ow fe",
     "email": "beecherbryson8708+68128@gmail.com"
@@ -80,14 +80,23 @@
     "zip-evidence",
     "verified-download",
     "media-upload",
-    "visual-audio-inspection"
+    "visual-audio-inspection",
+    "one-click-approval",
+    "plan-and-execute",
+    "immediate-approved-dispatch",
+    "no-double-approval",
+    "g04-single-stage",
+    "g05-single-stage",
+    "story-first-fasttrack",
+    "no-scene-batch-approval",
+    "one-q04-one-q05"
   ],
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "REVIEW_PHIM",
         "shortDescription": "Dựng review phim bằng AI",
-        "longDescription": "REVIEW_PHIM v1.3.20: khi phải xem clip/nghe âm thanh để kiểm chứng, tạo ZIP ngắn trong JOB_DIR, báo link tải thật khi khả dụng, yêu cầu upload và thực sự kiểm tra media; giữ G11A/G11B thumbnail/intro 2 giây và G01–G15.",
+        "longDescription": "REVIEW_PHIM v1.3.22: G04/G05 mỗi giai đoạn một nhiệm vụ nguyên vẹn và một QC tổng thể; giảm các vòng microtask không cần thiết, vẫn giữ duyệt kịch bản và kiểm media thật.",
         "developerName": "ow fe",
         "category": "Productivity",
         "capabilities": [
