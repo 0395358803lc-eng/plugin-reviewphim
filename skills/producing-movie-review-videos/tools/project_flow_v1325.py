@@ -273,7 +273,10 @@ def validate_artifacts(job_dir:str|Path, outputs:list[dict[str,Any]], required:l
     """
     try:
         if not isinstance(outputs,list) or not isinstance(required,list):return {'ok':False,'reason':'invalid output record'}
-        root=Path(job_dir).resolve(strict=True)
+        original_root=Path(job_dir)
+        if any(p.is_symlink() or getattr(p,'is_junction',lambda:False)() for p in (original_root,*original_root.parents)):
+            return {'ok':False,'reason':'job root redirects'}
+        root=original_root.resolve(strict=True)
         names={}
         for item in outputs:
             rel=item.get('relative_path');digest=item.get('sha256')

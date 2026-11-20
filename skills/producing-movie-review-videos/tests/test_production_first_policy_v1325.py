@@ -32,7 +32,7 @@ def test_one_click_uses_new_hinge_progression():
 def test_manifest_compatibility_and_no_default_prompt_loss():
     root=json.loads((PLUGIN/'plugin.json').read_text(encoding='utf-8'))
     legacy=json.loads((PLUGIN/'.codex-plugin/plugin.json').read_text(encoding='utf-8'))
-    assert root['version']==legacy['version']=='1.3.26'
+    assert root['version']==legacy['version']=='1.3.27'
     assert root['name']==legacy['name']=='review-phim'
     assert root['extensions']['com.openai']['apps']==legacy['apps']=='./.app.json'
     assert len(root['extensions']['com.openai']['interface']['defaultPrompt'])==9

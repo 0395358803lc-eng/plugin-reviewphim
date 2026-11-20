@@ -6,4 +6,4 @@ Its original SHA-256 is
 `3906d1a038ce27cb08f0d7bd4d8f8a4dd0eff500ad17063d35fc937324cd8c5f`.
 Paths and checksums inside it describe that historical overlay. Do not regenerate
 them from current files. The active version is in the root `plugin.json` and
-`.codex-plugin/plugin.json`, both 1.3.26.
+`.codex-plugin/plugin.json`, both 1.3.27 following the user's publication approval.

@@ -21,7 +21,9 @@ untouched for recovery inspection.
 
 The old overlay manifest moved byte-for-byte to
 `skills/producing-movie-review-videos/history/PACKAGE_MANIFEST_V1325.json`.
-Both active plugin manifests remain 1.3.26. The optional packaging helper now
+The user subsequently authorized release 1.3.27 because Plugin Creator cannot
+republish the same semantic version; both active manifests are synchronized to
+1.3.27. The optional packaging helper now
 writes a separately named current manifest using the actual root version.
 Plugin/App identity and connector configuration are unchanged.
 
@@ -65,11 +67,15 @@ old workspace are preserved. Faster Whisper large-v3-turbo has transcribed the
 real clip on the RTX 4060. VieNeu v3 Turbo has generated a real Vietnamese voice
 proposal on CUDA. ChatGPT generated a real thumbnail for manual placement.
 
-The proposed deliverable is a 48-second narrated review, with a 2-second intro
-and original generated instrumental music. Final rendering, actual interruption
-and resume, manual image confirmation, user review and requested revision must
-be recorded before TEST-02 can be claimed complete. No user acceptance has been
-inferred from synthetic tests.
+The user approved the 48-second narrated review package and its specific
+creative delegations. Real narration, shot selection, timeline, pilot and the
+46-second body have been rendered with CUDA VieNeu and NVENC. An intentional
+abrupt host exit at G11 left TASK_STARTED durable; the host verified the worker
+was inactive, recovered and retried only G11. Earlier completed stages were
+preserved. The actual state is WAITING_USER / USER_IMAGE_PLACEMENT at G11B.
+Final intro/music rendering, manual image confirmation, user review and the
+requested revision are pending. TEST-02 is not complete and no acceptance has
+been inferred from synthetic tests.
 
 Technical references: Windows file USN information follows
 [Microsoft's read-only file USN API](https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_read_file_usn_data).

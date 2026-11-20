@@ -1,9 +1,10 @@
-# REVIEW_PHIM v1.3.26
+# REVIEW_PHIM v1.3.27
 
 Production First → User Review → Targeted Revision.
 
 Xem [hướng dẫn v1.3.26](skills/producing-movie-review-videos/references/PRODUCTION_RELIABILITY_V1326.md)
-và [báo cáo bàn giao](RELEASE_V1326.md).
+và [bản sửa âm thanh/cache/ledger cùng bằng chứng](REMAINING_RELIABILITY_V1326.md).
+Phiên bản 1.3.27 được người dùng duyệt để phát hành các yêu cầu sửa còn lại của 1.3.26.
 Giữ nguyên App/định danh plugin. Không tự cài bản này vào tài khoản hay xuất bản video.
 
 ## Tài liệu phiên bản trước

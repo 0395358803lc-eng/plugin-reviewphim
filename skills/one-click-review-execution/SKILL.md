@@ -3,7 +3,7 @@ name: one-click-review-execution
 description: Use alongside producing-movie-review-videos whenever REVIEW_PHIM plans, approves, resumes, or executes a work package; turns one approved plan into immediate scoped execution without a second deployment approval.
 ---
 
-## Production First v1.3.26
+## Production First v1.3.27
 
 Khi gói đã duyệt chọn `PRODUCTION_FIRST_V1325`, đọc
 [chính sách chuẩn](../producing-movie-review-videos/references/PRODUCTION_FIRST_AUTONOMOUS_V1325.md)

@@ -1,0 +1,168 @@
+{
+  "job_name": "fatman-reliability-20261120",
+  "source_file": "Watch Fatman 2020 Full Movie Online Free in HD WTMTV.mp4",
+  "source_sha256": "4e61c99871fe9fa4bf99bbf9d99c2d321043b3c252bed2a16fb8fde7b642fc49",
+  "source_unchanged_after_test": true,
+  "source_interval_seconds": [
+    600,
+    660
+  ],
+  "planned_output_seconds": 48,
+  "status": "WAITING_USER",
+  "wait_reason": "USER_IMAGE_PLACEMENT",
+  "ledger_seq": 32,
+  "completed_stages": [
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09",
+    "G10",
+    "G11",
+    "G11A",
+    "P00"
+  ],
+  "asr_engine": "faster-whisper-large-v3-turbo",
+  "asr_device": "cuda",
+  "tts_engine": "VieNeu v3 Turbo",
+  "tts_device": "cuda",
+  "tts_voice": "Tr?c Ly",
+  "thumbnail_generated": true,
+  "thumbnail_manual_placement_confirmed": false,
+  "retry_history": [
+    {
+      "attempt": 1,
+      "kind": "connection",
+      "reason": "execution interrupted; verified inactive: logs/recovery_inspection.json",
+      "result": "DONE",
+      "stage": "G11"
+    }
+  ],
+  "interruption": {
+    "source": "host_process_inspection",
+    "pid": 43864,
+    "active": false,
+    "requested_exit_code": 86,
+    "host_tool_exit_code": 1,
+    "plan_hash": "0aaa2a7ad22c16f8ccd6e9e79a0d123a7b0669cd4568a6747c4736c15fcf26e3",
+    "inspection_ref": "Get-Process found no PID; WaitForSingleObject/OpenProcess verified inactive after real process exit"
+  },
+  "body_media": [
+    {
+      "relative_path": "out/body.mp4",
+      "sha256": "8cc19c388be84e4a47ed95775dbceb7fc3775d6bfdf0d5b6834530b1c1a233b8",
+      "duration": 46.0,
+      "decode_exit": 0,
+      "probe_exit": 0
+    }
+  ],
+  "stage_outputs": {
+    "G01": [
+      {
+        "relative_path": "source/excerpt.mp4",
+        "sha256": "daca320dc251ae674c60f02c049a4705a464a2dc2ab6c9472d2c5bf528774658",
+        "bytes": 8306908
+      },
+      {
+        "relative_path": "source/asr.wav",
+        "sha256": "2026aa5caa33271e1fe2d5c56e6186a2c9f3e8abcbdb504a2508b9e9f9955abb",
+        "bytes": 1920078
+      }
+    ],
+    "G02": [
+      {
+        "relative_path": "analysis/asr.json",
+        "sha256": "2bce6c82a966907106ff328e18c59a461e6f86d901488781177967a94c3189b1",
+        "bytes": 1059
+      }
+    ],
+    "G03": [
+      {
+        "relative_path": "analysis/translation.json",
+        "sha256": "978da704d7ed78504f00ffd30d22eaf586a2cdf58cb15cf5d60bf3083b8f8fbd",
+        "bytes": 1281
+      }
+    ],
+    "G04": [
+      {
+        "relative_path": "analysis/understanding.json",
+        "sha256": "d9eca1f934753c36d108bba16850c3a0fc0c4ef7392e928358d45133f1ee5a07",
+        "bytes": 430
+      }
+    ],
+    "G05": [
+      {
+        "relative_path": "analysis/review.txt",
+        "sha256": "a229090b4ee1c6e99804d1bd0f65036d62e6512befb3d285533f97c747728327",
+        "bytes": 856
+      }
+    ],
+    "G06": [
+      {
+        "relative_path": "analysis/beats.json",
+        "sha256": "cf3cec135ee1610fc79b065708906b671f33e4b78836a71a6cbbe4c5d6011ffd",
+        "bytes": 1141
+      }
+    ],
+    "G07": [
+      {
+        "relative_path": "voice/narration.wav",
+        "sha256": "c8630585f4f87f3f0bb2210596dcf1d8481fb1bbe9e719bc534d8a9df4d57d2a",
+        "bytes": 8832078
+      },
+      {
+        "relative_path": "voice/narration.json",
+        "sha256": "ad12f4af0a1a845a8a3373330be350952d0f763b7b6bd8d0ab9080b612e69455",
+        "bytes": 1086
+      }
+    ],
+    "G08": [
+      {
+        "relative_path": "analysis/shots.json",
+        "sha256": "52d2f303fcdd7a4a9d80ce818bc7f3786b252457f2f460731294cb0174e9c9a5",
+        "bytes": 434
+      }
+    ],
+    "G09": [
+      {
+        "relative_path": "analysis/timeline.json",
+        "sha256": "3753574b634fcafa2766386d4a26ed3e50e8a67f35f53b193dbed62bdf9cfad1",
+        "bytes": 554
+      }
+    ],
+    "G10": [
+      {
+        "relative_path": "out/pilot.mp4",
+        "sha256": "adf3612378abe39d06f02dd8725645665a2d31e282bfa7e2c7812e648e547feb",
+        "bytes": 1323157
+      }
+    ],
+    "G11": [
+      {
+        "relative_path": "out/body.mp4",
+        "sha256": "8cc19c388be84e4a47ed95775dbceb7fc3775d6bfdf0d5b6834530b1c1a233b8",
+        "bytes": 10462760
+      }
+    ],
+    "G11A": [
+      {
+        "relative_path": "publish/metadata.json",
+        "sha256": "8b33495789db8a1d437cbe9ffbaec5affc703ea93ec8f902ede479874dc82b04",
+        "bytes": 394
+      }
+    ],
+    "P00": [
+      {
+        "relative_path": "analysis/inventory.json",
+        "sha256": "00b68650467025e4e7e9d1f07e2e37e47beb2418537d53b7a52509456a7689e7",
+        "bytes": 464
+      }
+    ]
+  },
+  "user_final_acceptance": null,
+  "targeted_revision": null
+}

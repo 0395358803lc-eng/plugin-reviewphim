@@ -170,6 +170,8 @@ def test_junction_cannot_escape_artifact_or_checkpoint_root(tmp_path):
     try:
         report=f.validate_artifacts(job,[{'relative_path':'redirect/keep','sha256':f.file_sha(outside/'keep')}],['redirect/keep'])
         assert not report['ok']
+        report=f.validate_artifacts(job/'redirect',[{'relative_path':'keep','sha256':f.file_sha(outside/'keep')}],['keep'])
+        assert not report['ok']
         with pytest.raises(ValueError,match='redirect'):f.checkpoint(job/'redirect',{'status':'RUNNING'})
         assert (outside/'keep').read_bytes()==b'unchanged' and not (outside/'logs').exists()
     finally:(job/'redirect').rmdir()

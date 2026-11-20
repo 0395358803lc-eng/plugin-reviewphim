@@ -1,6 +1,6 @@
 {
   "name": "review-phim",
-  "version": "1.3.26",
+  "version": "1.3.27",
   "description": "REVIEW_PHIM v1.3.26: Production First state machine with real MP4 probe/decode, bounded recovery, verified reuse, durable review ledger and targeted revisions.",
   "author": {
     "name": "ow fe",

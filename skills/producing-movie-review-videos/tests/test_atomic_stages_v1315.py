@@ -54,7 +54,7 @@ class AtomicStageTests(unittest.TestCase):
     def test_versions_and_entrypoint(self):
         manifest=json.loads((PLUGIN/'plugin.json').read_text(encoding='utf-8'))
         codex=json.loads((PLUGIN/'.codex-plugin/plugin.json').read_text(encoding='utf-8'))
-        self.assertEqual(manifest['version'],'1.3.26');self.assertEqual(codex['version'],'1.3.26')
+        self.assertEqual(manifest['version'],'1.3.27');self.assertEqual(codex['version'],'1.3.27')
         self.assertEqual(manifest['extensions']['com.openai']['apps'],'./.app.json')
         self.assertEqual(codex['apps'],'./.app.json')
         prompt=' '.join(manifest['extensions']['com.openai']['interface']['defaultPrompt'])
