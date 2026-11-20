@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # G05_NARRATIVE_ONLY_V1317 — REVIEW kể chuyện thuần túy, tuyệt đối không nhắc quy trình
 
 > **ƯU TIÊN CAO NHẤT CHO MỌI PHIM Ở G05, hiệu lực từ REVIEW_PHIM v1.3.17.** Chính sách này bổ sung điều kiện bắt buộc cho `G05.REVIEW.FULL` và ghi đè mọi ví dụ trước đây có cách viết như "theo bản dịch", "trong transcript", "những khung hình đã kiểm tra", "kịch bản không khẳng định". Giữ nguyên **sáu bước** kể chuyện, một nhiệm vụ trọn giai đoạn, Q05 tổng thể và cổng con người `G05_SCRIPT`.
@@ -46,3 +62,5 @@ Từng câu sửa phải được so với `story_map`, `visual_events`, transcr
 **Kiểm tra không phải bảo đảm máy móc tuyệt đối về ngữ nghĩa:** ngoài regex, ChatGPT phải tự duyệt và đọc lại từng đoạn. Mẫu mới mang ý nghĩa tương đương quy trình phải chặn dù không khớp regex. Không tự sửa các bản review/checkbox đã PASS của dự án cũ khi phát hành plugin mới; muốn thay đổi bản Fatman v1 cũ phải viết phiên bản mới trong một gói được duyệt, giữ nguyên hash/checkpoint cũ.
 
 **G04/G06/G07/G08/G09–G15 và mọi điều kiện source/hash/approval cũ giữ nguyên.** Quy tắc mới chỉ điều chỉnh ngôn ngữ xuất cho người xem ở G05 và điều kiện nghiệm thu Q05.
+
+</details>

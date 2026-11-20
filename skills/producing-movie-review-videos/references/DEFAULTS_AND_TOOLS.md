@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # DEFAULTS_AND_TOOLS — Preset, công cụ và bộ cài độc lập
 
 **Ưu tiên `SKILL.md`, `SESSION_ORCHESTRATION.md`, `HARDWARE_PROFILE.md`, `INSTALLATION_CATALOG.md`.** Không mặc định máy, thư mục, phim, logo, thời lượng hay giọng, không mặc định ổ D: hoặc C:. Hỏi `FILM_DIR`, chọn `SOURCE_MOVIE`, `JOB_DIR=FILM_DIR\REVIEW_PHIM_WORKSPACE\<project-id>`; phim/logo gốc chỉ đọc.
@@ -36,3 +52,5 @@
 G04 chỉ tạo `analysis/frames/`, `analysis/contact_sheets/`, `analysis/motion_checks/` sau phê duyệt; cần `FILM_UNDERSTANDING_READY` trước đề xuất G05. G08 đối chiếu clip/actor/action/emotion không chỉ dựa scene timecode; không lấy sai tuyến. G11 `hflip=false`, không mặc định 2,04s/shot, zoom 8%, crop, LUT hay 24 fps. Hình đã upscale không gọi là native. G14 không tuyên bố 100% khi chưa xem–nghe liên tục.
 
 Không ghi đè, không xóa trừ path được phê duyệt riêng, không lấy Traffic/UNABOMBER làm mặc định. Giữ phim/logo gốc, REVIEW, transcript, shot map, báo cáo, MP4 và ZIP nguồn.
+
+</details>

@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # WORKFLOW_CONSISTENCY_V1312 — Hợp đồng điều phối thống nhất REVIEW_PHIM v1.3.12
 
 **BẮT BUỘC ĐỌC ĐẦU TIÊN** trước P00 và mọi công đoạn G01–G15. Đây là hợp đồng hành vi hiện hành cho việc chọn máy, phê duyệt theo gói, trạng thái, rollback/recovery, thứ tự pilot/full render và nghiệm thu. `tools/work_package_state.py` là bộ **kiểm chứng thuần Python stdlib**, không phải daemon hay quyền chạy lệnh; không tự cài/chạy nếu môi trường người dùng chưa cho phép.
@@ -68,3 +84,5 @@ Với dự án cũ đã render full trong G09: giữ tệp đó như **draft ch�
 
 - 15 giai đoạn vẫn xuất đủ artifact cũ; thay đổi duy nhất ở thứ tự G09/G10 full-render/pilot, granularity phê duyệt, trạng thái và recovery. G14/Q14 kiểm ba chiều; G15 bàn giao độc lập xóa.
 - Unit tests phải bao phủ: plan canonical, wrong approval, bounded batches, no double run, source hash mismatch, blocked human G05/G07/G10, G15 no delete by delivery, resume after paused, error budget total, legacy evidence read-only, lock contention. Bài thử chỉ kiểm policy/stdlib không xác nhận GPU/TTS/movie thật.
+
+</details>

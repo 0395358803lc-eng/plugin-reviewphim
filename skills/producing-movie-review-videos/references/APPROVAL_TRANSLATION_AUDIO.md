@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # APPROVAL_TRANSLATION_AUDIO — Gói được duyệt, ChatGPT dịch và nghe có bằng chứng
 
 **Quy tắc phê duyệt mới:** xem `SMART_BATCH_APPROVAL.md`. Chỉ xin phê duyệt trước **WORK_PACKAGE_ID** và các quyết định cần người dùng thật sự chọn; không bắt duyệt mỗi `TASK_ID`, mỗi lô transcript hay mỗi đoạn audio trích xuất nếu đã nằm rõ trong package scope. Thiếu quyền trích audio hoặc cấp quyền gửi file ra chat → đề xuất gói bổ sung. Đây không phải quyền tự tải/sửa toàn máy.
@@ -19,3 +35,5 @@ Chỉ khi **người dùng upload file audio vào chat và ChatGPT thực sự n
 ## D. Những việc không được gộp quyền
 
 Duyệt `WORK_PACKAGE_ID` không tự chấp thuận thay phim/logo, tải/cài model mới, thay GPU backend, xóa G15, đổi kịch bản G05/giọng G07/pilot G10 đã duyệt, hay xem/nghe thay ChatGPT. Gói có thể thực hiện các công việc kỹ thuật độc lập trong scope; phê duyệt nội dung của người dùng là human gate riêng. Mọi bản dịch thiếu đoạn không được khai QC PASS.
+
+</details>

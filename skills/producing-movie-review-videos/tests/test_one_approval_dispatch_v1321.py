@@ -74,6 +74,9 @@ def core_fixture():
     core.transition = transition
     core.acquire_lock = acquire_lock
     core.release_lock = release_lock
+    spec=importlib.util.spec_from_file_location('real_work_package_state',ROOT/'tools'/'work_package_state.py')
+    real=importlib.util.module_from_spec(spec);spec.loader.exec_module(real)
+    core.verify_lock=real.verify_lock
     return core
 
 

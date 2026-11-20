@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # EDITORIAL_SKILLS_INTEGRATION — Bản tích hợp 3 skill biên tập (v1.3.7)
 
 ## 1. Scope và precedence
@@ -41,3 +57,5 @@ Sau mỗi TASK_ID: báo `PASS/NEEDS_FIX/NOT_VERIFIED/BLOCKED` với SHA256, samp
 - Upstream `find-broll` ghi nhận nguồn tham khảo https://github.com/louisedesadeleer/b-roll-finder .
 
 Giữ NOTICE tại `THIRD_PARTY_NOTICES.md`, ghi rõ adapted not verbatim. Mọi media bên thứ ba tuân theo giấy phép riêng, không được hưởng mặc định MIT của mã skill.
+
+</details>

@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # WORKFLOW — 15 giai đoạn sản xuất review phim
 
 Áp dụng `SESSION_ORCHESTRATION.md`: chọn máy → chọn phim → scaffold workspace rỗng → chọn logo hoặc không logo → **kiểm tra phần cứng chỉ đọc** → trình đầy đủ danh mục cài A01–A08/O01–O03 với cấu hình tối ưu theo máy → duyệt cài → xin duyệt **riêng G01–G15**. Không chạy hàng loạt; không mặc định thời lượng, nguồn phim, logo, kênh hay ổ đĩa. `FILM_DIR` và `JOB_DIR=FILM_DIR\REVIEW_PHIM_WORKSPACE\<project-id>` là biến theo phiên. Mỗi giai đoạn hoàn tất phải có đầu ra thật, QC và dừng chờ duyệt giai đoạn kế. Quy tắc chia nhỏ đầu việc và nghiệm thu theo `MICROTASK_ORCHESTRATION.md` và `MICROTASK_ACCEPTANCE_REPAIR.md` luôn ưu tiên. Phân vai model AI và cổng xác minh tuân thủ `MODEL_ROLE_POLICY.md`.
@@ -109,3 +125,5 @@ Giữ phim gốc và logo bất biến, MP4 cuối, tài liệu G04/G05, REVIEW,
 ## Ca học hỏi, không mặc định
 
 Traffic (2000) từng có 51 đoạn REVIEW, 281 beat, 334 shot, Trúc Ly 1.00x, intro 2 giây, MP4 ~23:02; UNABOMBER là ví dụ phương pháp kể chuyện 2 dòng thời gian. Không lấy các số, tên phim, giọng, logo hoặc thời lượng làm mặc định cho phim sau. Kiểm kỹ thuật từng frame không chứng minh chính xác 100% nội dung nếu chưa xem/nghe liên tục.
+
+</details>

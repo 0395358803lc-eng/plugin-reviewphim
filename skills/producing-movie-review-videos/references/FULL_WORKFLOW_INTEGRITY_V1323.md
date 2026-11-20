@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # FULL_WORKFLOW_INTEGRITY_V1323 — REVIEW_PHIM v1.3.23
 
 > **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
@@ -60,3 +76,5 @@
 - `NOT_VERIFIED`, `WAITING_FOR_AUDIO_UPLOAD`, `WAITING_FOR_HUMAN_APPROVAL`, `BLOCKED`, `WAITING_FOR_JOB`, `PARTIAL` là trạng thái thật. Một package đã được duyệt chỉ yêu cầu người dùng “Tiếp tục cùng gói” sau khi lượt chat dừng; không xin phê duyệt thiết kế/thi hành lại.
 - Nếu action ngoài budget, thay source/movie/hash, thay model/runtime/driver, thay stage/scope, xóa file hay mở network mới: dừng và xin duyệt gói hữu hạn mới. Vẫn theo giới hạn sửa 2/issue, 4/gói khi được duyệt.
 - Kiểm thử `tests/test_workflow_integrity_v1323.py` là **hợp đồng offline**; không chứng minh app đã thật gọi guard trước mỗi lệnh Remote Desktop, media đã được nghe/xem, hoặc tốc độ render được cải thiện. Nghiệm thu trên job thật phải có measured runtime và artifact thật.
+
+</details>

@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # REVIEW_PHIM v1.3.21 — ONE_APPROVAL_START_POLICY (lập kế hoạch + triển khai một nút)
 
 > **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
@@ -39,3 +55,5 @@ Thay hai lượt **(a) phê duyệt kế hoạch** và **(b) phê duyệt/ra l�
 ## 5. Báo cáo gọn
 
 Sau mỗi lượt **nói kết quả thật**, không xin “duyệt triển khai” lại. Mẫu: `WORK_PACKAGE_ID | Đã thực thi n/N | QC PASS | Bị chặn bởi ... | Bước tiếp theo`. Một câu ngắn về tác vụ đang chạy ở máy chỉ khi có process thật. Nút tiếp theo là “Tiếp tục cùng gói” (chủ động khi dở) hoặc quyết định nội dung thực, không phải “phê duyệt triển khai” lặp.
+
+</details>

@@ -4,6 +4,8 @@ from __future__ import annotations
 import importlib.util
 import hashlib
 import json
+import subprocess
+import shutil
 from pathlib import Path
 import pytest
 
@@ -22,19 +24,25 @@ def plan(root, *,stages=('G01','G02','G03'), delegations=()):
           'G04':'G04.FILM.UNDERSTANDING.FULL','G05':'G05.REVIEW.FULL','G07':'G07.M03','G10':'G10.M01',
           'G11A':'G11A.YOUTUBE_METADATA.FULL','G11B':'G11B.THUMBNAIL.FULL',
           'G12':'G12.M01','G14':'G14.M01','G15':'G15.M03'}
+    source=root.parent/'source.mkv'
+    source.parent.mkdir(parents=True,exist_ok=True)
+    if not source.exists():source.write_bytes(b'test-source-bytes')
     return {'schema_version':'work-package.v2','execution_mode':'PRODUCTION_FIRST_V1325',
       'WORK_PACKAGE_ID':'FULL-2026-11-20','deviceId':'device-A','JOB_DIR':str(root),
-      'SOURCE_MOVIE':str(root.parent/'source.mkv'),'source_hash':'a'*64,
+      'SOURCE_MOVIE':str(root.parent/'source.mkv'),'source_hash':hashlib.sha256(source.read_bytes()).hexdigest(),
       'allowed_stages':list(stages),'task_ids':[task.get(x,x+'.M01') for x in stages],
       'bounded_batches':[],'allowed_read_roots':[str(root.parent)],
       'allowed_write_roots':[str(root)],'repair_budget':{'per_issue':2,'total':4,'allowed_kinds':['format']},
+      'stage_proposals':{'G07':['proposals/voice-sample.wav']} if 'G07' in stages and 'G07_VOICE' not in delegations else {},
       'install_budget':[],'human_gates':[],'creative_delegations':list(delegations),
       'expected_outputs':[],'acceptance_criteria':[],'stop_conditions':[],
-      'stage_outputs':{s:[f'output/{s}.mp4' if s=='G15' else f'output/{s}.dat'] for s in stages},
-      'allowed_executables_and_models':[]}
+      'stage_outputs':{s:['assets/youtube_thumbnail.png' if s=='G11B' else f'output/{s}.mp4' if s=='G15' else f'output/{s}.dat'] for s in stages},
+      'allowed_executables_and_models':['ffprobe','ffmpeg']}
 
 
 def state(m,p):
+    logs=Path(p['JOB_DIR'])/'logs';logs.mkdir(parents=True,exist_ok=True)
+    (logs/'work_package.lock').write_text(json.dumps({'owner':'session-A','package_id':p['WORK_PACKAGE_ID'], 'WORK_PACKAGE_ID':p['WORK_PACKAGE_ID'],'deviceId':p['deviceId'],'plan_hash':m.hash_plan(p)}))
     return {'status':'RUNNING','plan_hash':m.hash_plan(p),'approved_plan_hash':m.hash_plan(p),
       'approval_ref':'user-approved-exact-plan','deviceId':p['deviceId'],
       'JOB_DIR':p['JOB_DIR'],'source_hash':p['source_hash'],
@@ -44,9 +52,21 @@ def state(m,p):
 
 def complete(m,p,stage):
     f=Path(p['JOB_DIR'])/p['stage_outputs'][stage][0]
-    f.parent.mkdir(parents=True,exist_ok=True);f.write_bytes((stage+'-real-output').encode())
+    f.parent.mkdir(parents=True,exist_ok=True)
+    evidence=None
+    if f.suffix=='.mp4':
+        color='red' if p.get('revision_number',1)>1 else 'blue'
+        subprocess.run(['ffmpeg','-nostdin','-v','error','-y','-f','lavfi','-i',f'color=c={color}:s=160x90:r=12',
+            '-t','0.5','-c:v','mpeg4',str(f)],check=True,capture_output=True)
+    elif stage=='G11B':
+        from test_manual_thumbnail_handoff_v1324 import make_png,inputs
+        make_png(f)
+        _,title,approval,_=inputs(Path(p['JOB_DIR']))
+        evidence={'title':title,'approval':approval,'image_name':f.name,'relative_path':p['stage_outputs'][stage][0],
+                  'image_sha256':hashlib.sha256(f.read_bytes()).hexdigest()}
+    else:f.write_bytes((stage+'-real-output').encode())
     return {'status':'DONE','outputs':[{'relative_path':p['stage_outputs'][stage][0],
-          'sha256':hashlib.sha256(f.read_bytes()).hexdigest()}], 'technical_ready':True}
+          'sha256':hashlib.sha256(f.read_bytes()).hexdigest()}], 'technical_ready':True,'thumbnail_evidence':evidence}
 
 
 def test_missing_module_red():
@@ -89,7 +109,7 @@ def test_reject_unauthorized_or_wrong_owner(tmp_path):
     assert not m.decide_next(p,s,session_owner='different')['allowed']
     assert not m.decide_next(p,{**s,'source_hash':'b'*64},session_owner='session-A')['allowed']
     assert not m.decide_next(p,{**s,'plan_hash':'0'*64},session_owner='session-A')['allowed']
-    assert not m.decide_next(p,{**s,'lock_verified':False},session_owner='session-A')['allowed']
+    assert m.decide_next(p,{**s,'lock_verified':False},session_owner='session-A')['allowed']  # real lock is authoritative
     assert not m.decide_next(p,{**s,'status':'PROPOSED'},session_owner='session-A')['allowed']
 
 
@@ -116,7 +136,7 @@ def test_manual_thumbnail_stops_even_with_creative_delegation(tmp_path):
 
 def test_manual_thumbnail_cannot_mark_done_without_file_verified(tmp_path):
     m=module();p=plan(tmp_path,stages=('G11B',),delegations=('G11B_THUMBNAIL',))
-    result=m.run_until_hinge(p,state(m,p),lambda t,x:complete(m,p,x),session_owner='session-A')
+    result=m.run_until_hinge(p,state(m,p),lambda t,x:{**complete(m,p,x),'thumbnail_evidence':None},session_owner='session-A')
     assert result['status']=='FAILED'
 
 
@@ -184,7 +204,7 @@ def test_manual_resume_needs_real_user_and_verified_placement(tmp_path):
     s=state(m,p);s['status']='WAITING_USER';s['next_stage']='G11B';s['wait_reason']='USER_IMAGE_PLACEMENT'
     with pytest.raises(ValueError):m.resume_after_user(p,s,action='USER_IMAGE_PLACEMENT',user_ref='',evidence={'status':'FILE_ACCEPTED'})
     with pytest.raises(ValueError):m.resume_after_user(p,s,action='USER_IMAGE_PLACEMENT',user_ref='real-msg',evidence={'status':'UNVERIFIED'})
-    resumed=m.resume_after_user(p,s,action='USER_IMAGE_PLACEMENT',user_ref='real-msg',evidence={'status':'FILE_ACCEPTED'})
+    resumed=m.resume_after_user(p,s,action='USER_IMAGE_PLACEMENT',user_ref='real-msg',evidence=complete(m,p,'G11B')['thumbnail_evidence'])
     assert resumed['status']=='RUNNING' and resumed['external_resolved_by']=='real-msg'
 
 
@@ -232,15 +252,16 @@ def test_scope_cannot_write_to_unapproved_job_or_read_other_source(tmp_path):
 def test_reuse_stage_outputs_from_prior_approved_package_only_after_bytes_check(tmp_path):
     m=module();p=plan(tmp_path,stages=('G01','G02'))
     r=complete(m,p,'G01')
-    old={'task_id':'G01.SOURCE.FULL','source_hash':p['source_hash'],
+    old={'schema':'stage-completion.v2','JOB_DIR':p['JOB_DIR'],'deviceId':p['deviceId'],'task_id':'G01.SOURCE.FULL','source_hash':p['source_hash'],
          'approval_ref':'old-real-user-approval','WORK_PACKAGE_ID':'PREV-PACKAGE',
          'outputs':r['outputs'],'completion_status':'DONE', 'plan_hash':'f'*64,
-         'inputs':{'source':'a'*64}}
+         'inputs':m.expected_inputs(p,{},'G01')}
+    old['record_sha256']=m.completion_hash(old)
     s=state(m,p)
-    adopted=m.merge_verified_completions(p,s,{'G01':old},expected_inputs={'G01':{'source':'a'*64}})
+    adopted=m.merge_verified_completions(p,s,{'G01':old},expected_inputs={'G01':m.expected_inputs(p,{},'G01')})
     assert adopted['stage_completions']['G01']['imported_from_package']=='PREV-PACKAGE'
     assert m.decide_next(p,adopted,session_owner='session-A')['next_stage']=='G02'
     bad={**old,'source_hash':'b'*64}
-    with pytest.raises(ValueError):m.merge_verified_completions(p,s,{'G01':bad},expected_inputs={'G01':{'source':'a'*64}})
+    with pytest.raises(ValueError):m.merge_verified_completions(p,s,{'G01':bad},expected_inputs={'G01':m.expected_inputs(p,{},'G01')})
     (tmp_path/'output/G01.dat').write_bytes(b'changed')
-    with pytest.raises(ValueError):m.merge_verified_completions(p,s,{'G01':old},expected_inputs={'G01':{'source':'a'*64}})
+    with pytest.raises(ValueError):m.merge_verified_completions(p,s,{'G01':old},expected_inputs={'G01':m.expected_inputs(p,{},'G01')})

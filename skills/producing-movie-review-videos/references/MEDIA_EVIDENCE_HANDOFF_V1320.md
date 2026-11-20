@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # REVIEW_PHIM v1.3.20 — Mandatory Clip/Audio ZIP Handoff & Actual Inspection
 
 **Phạm vi:** mọi giai đoạn P00/G01–G15 (bao gồm G11A/G11B) khi có vướng mắc mà ChatGPT **bắt buộc** phải quan sát clip thật hoặc nghe audio thật để đưa ra nhận định cốt lõi, thay vì chỉ dựa vào log/JSON/ASR/FFprobe/model. Đây là **quy tắc ưu tiên v1.3.20**, ghi đè cách gửi audio riêng tại `APPROVAL_TRANSLATION_AUDIO.md` và mọi hướng dẫn cũ nếu có xung đột về ZIP/link/chứng cứ. Không ép xuất ZIP cho những lỗi nhỏ không ảnh hưởng kết luận hoặc những frame ChatGPT đã thật sự xem được qua công cụ hiện tại.
@@ -36,3 +52,5 @@
 - **Hard fail**: có request quan trọng nhưng không ZIP hoặc ZIP không thật; link download chưa được xác minh; ZIP không hash; file trích ngoài JOB_DIR/quyền; upload chưa có mà ghi `HEARD_VERIFIED`/`VERIFIED_VISUAL`; clip không đủ timecodes/âm thanh/motion để trả lời; gate PASS chỉ nhờ ASR/log.
 - **Cho phép báo chờ đúng thực tế** nếu remote không thể truyền file. Phải có thông báo rõ ràng + đường dẫn máy, không dựng link giả. Trải nghiệm "download link" tự động chỉ hoàn chỉnh khi connector hỗ trợ đưa file ra vùng có thể tải hoặc user có cách tải trực tiếp đã kiểm chứng.
 - **Không thay đổi** quy trình 15 G-stage, G11A/B, human gates G05_SCRIPT, G07_VOICE, G10_PILOT, G11A_METADATA, G11B_THUMBNAIL, G15_DELETE; package scopes/hash, nguồn read-only, `work_package.lock`, G14 3 nhánh QC độc lập; áp dụng quy tắc này xuyên giai đoạn dưới dạng **ngoại lệ có bằng chứng**.
+
+</details>

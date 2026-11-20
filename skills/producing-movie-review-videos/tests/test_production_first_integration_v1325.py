@@ -20,9 +20,7 @@ def test_production_first_dispatch_without_q01_or_q02(tmp_path):
     f=flow_mod();g=guard_mod();p=plan(tmp_path,stages=('G01','G02'));s=state(f,p)
     assert g.decide_dispatch(p,s,p['task_ids'][0],session_owner='session-A').allowed
     assert not g.decide_dispatch(p,s,p['task_ids'][1],session_owner='session-A').allowed
-    r=complete(f,p,'G01')
-    s['stage_completions']={'G01':{'task_id':p['task_ids'][0],'source_hash':p['source_hash'],
-                                    'outputs':r['outputs'],'completion_status':'DONE'}}
+    s=f.run_until_hinge(p,s,lambda t,st:complete(f,p,st),session_owner='session-A',max_steps=1)
     assert g.decide_dispatch(p,s,p['task_ids'][1],session_owner='session-A').allowed
     assert not s['qc_gates_passed']
 

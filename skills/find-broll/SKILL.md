@@ -3,6 +3,21 @@ name: find-broll
 description: Use when REVIEW_PHIM needs B-roll or inserts to support the narration, find timestamped source footage, verify provenance, vet shots, maintain B-roll approvals or place cutaways in G06, G07, G08 or G09.
 ---
 
+## Production First v1.3.26
+
+Khi gói đã duyệt chọn `PRODUCTION_FIRST_V1325`, đọc
+[chính sách chuẩn](../producing-movie-review-videos/references/PRODUCTION_FIRST_AUTONOMOUS_V1325.md)
+và [khôi phục v1.3.26](../producing-movie-review-videos/references/PRODUCTION_RELIABILITY_V1326.md).
+Dùng `project_flow_v1325.py`; không lấy QC=PASS, cổng duyệt hay vòng sửa lỗi
+thẩm mỹ trong nhánh Legacy dưới đây làm điều kiện chuyển bước.
+Chỉ dừng khi thiếu đầu ra dùng được, quyền hoặc đầu vào thiết yếu.
+
+## Legacy — chỉ điều phối gói cũ
+
+<details><summary>Quy tắc lịch sử</summary>
+
+
+
 # REVIEW_PHIM — Find B-Roll
 
 Phỏng theo [find-broll](https://github.com/gitethanwoo/video-editing/tree/main/skills/find-broll) của Ethan Woo (MIT, phương pháp có ghi công B-Roll Finder của Louise De Sadeleer). Đây là **lập kế hoạch và kiểm duyệt nguồn**, không là giấy phép tải/phát lại phim hoặc làm biến đổi sự thật. Khi chỉ làm review phim, **ưu tiên footage phim gốc đã được người dùng chọn**; B-roll ngoài là phương án có điều kiện.
@@ -20,3 +35,5 @@ Phỏng theo [find-broll](https://github.com/gitethanwoo/video-editing/tree/main
 `shots/broll_plan.json`, `shots/broll_source_manifest.json`, `shots/broll_placement_decisions.json`, `qc/broll_qc.md` trong JOB_DIR; giữ tương thích `shot_map.csv` và `timeline/edit_decisions.json`. Mỗi item: `broll_id`, `beat_id`, `anchor_text`, `anchor_time_s`, `source_kind`, `canonical_url_or_source_path`, `source_sha256`, `source_start_s/end_s`, `timeline_start_frame/end_frame_exclusive`, `rights_note`, `source_provenance`, `visual_purpose`, `evidence_ref`, `status` (`PLANNED/SOURCED/APPROVED/PLACED/DROPPED`), `approval_id`.
 
 QC trước sau dựng: kiểm mốc không đi trước lời kể, chủ thể tồn tại sau crop, đúng asset, không nháy frame, âm thanh ngoài bị tắt nếu chưa duyệt trộn, overlay/caption dễ đọc, đủ quyền/tác giả và không nhân đôi beat sai. Thiếu giấy phép hoặc bằng chứng quan trọng: `BLOCKED/NOT_VERIFIED`; sai clip: `NEEDS_FIX`; chỉ công việc được phê duyệt, kiểm chứng đạt mới `PASS`. Không bao giờ coi media tìm thấy trên mạng là được phép sử dụng lại.
+
+</details>

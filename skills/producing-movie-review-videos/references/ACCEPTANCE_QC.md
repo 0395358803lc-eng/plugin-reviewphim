@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # ACCEPTANCE_QC — Cửa nghiệm thu kỹ thuật, nội dung và hình ảnh
 
 **Không chấp nhận tuyên bố 100%** chỉ từ FFmpeg, ASR, contact sheet chưa thực sự xem hoặc clip chỉ khớp thời lượng. Kết luận `ĐẠT kỹ thuật`, `ĐẠT nội dung/biên tập`, `CHƯA XÁC MINH`, `CẦN SỬA`, `TẠM DỪNG` tách biệt. Mọi gate chỉ xét **sau khi người dùng duyệt riêng đúng Gxx**.
@@ -62,3 +78,5 @@
 ### Ca minh họa phát hiện lỗi
 
 `ISSUE-*` có `severity`, `timeline_in_frame`, `timeline_out_frame_exclusive`, `beat_id`, `shot_id`, `check`, `expected`, `actual`, `evidence_refs`, `status`, `action`. Một frame tìm khớp phim gốc chưa chắc cùng event/đúng người; giữ `CANDIDATE` tới khi nhìn clip/chuỗi. Khi thiếu file hoặc hash mismatch → `NEEDS_REVIEW/BLOCKED`, không tự fake pass. Phim nguồn 1080p không phải bằng chứng đã upscale; logo của kênh A không tự mang sang dự án kênh B. Không có OpenCV/Qwen-VL thì dùng FFmpeg và ChatGPT trực tiếp nếu có kênh ảnh thực.
+
+</details>

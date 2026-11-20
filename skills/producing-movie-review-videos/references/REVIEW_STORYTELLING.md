@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # REVIEW_STORYTELLING — G05 Công thức kể chuyện dựa trên bằng chứng
 
 **Điều kiện tiên quyết:** Có `FILM_UNDERSTANDING_READY`, đã được duyệt **riêng G05**, có `story_map`, `visual_events`, `characters`, `evidence_index`, các nguồn thật có thể đọc. Chỉ nhận review mẫu từ người khác làm **tham khảo phong cách**, không coi đó là bằng chứng phim gốc.
@@ -50,3 +66,5 @@
 ## Bổ sung v1.3: Ý đồ hình ảnh trong dàn ý (không đổi sáu bước)
 
 Ở `review/review_outline.json`, mỗi đoạn có thể khai báo `visual_intent_hints`: `visual_moment_hint`, `required_emotion_on_screen`, `event_ids` nguồn. Đây chỉ là gợi ý loại hình cần minh họa, không tạo `FILM_FACT` mới và không thay đổi nguyên văn **Sáu bước** đã phê duyệt hoặc các đoạn REVIEW đã xác minh. Khi hình không đủ đẹp/đủ dài, G08 đề xuất ứng viên khác hoặc báo thiếu; tuyệt đối không sửa lời REVIEW để phù hợp một shot sai nội dung.
+
+</details>

@@ -24,8 +24,8 @@ class StoryFirstContract(unittest.TestCase):
     def test_manifest_versions_and_app_binding(self):
         a=json.loads((PLUGIN_ROOT/'plugin.json').read_text('utf-8'))
         b=json.loads((PLUGIN_ROOT/'.codex-plugin/plugin.json').read_text('utf-8'))
-        self.assertEqual(a['version'],'1.3.25');self.assertEqual(b['version'],'1.3.25')
+        self.assertEqual(a['version'],'1.3.26');self.assertEqual(b['version'],'1.3.26')
         self.assertEqual(a['extensions']['com.openai']['apps'],'./.app.json')
         self.assertEqual(b['apps'],'./.app.json')
-        self.assertIn('STORY_FIRST_WORKFLOW_V1313',' '.join(a['extensions']['com.openai']['interface']['defaultPrompt']))
+        self.assertIn('PRODUCTION_FIRST_V1325',' '.join(a['extensions']['com.openai']['interface']['defaultPrompt']))
 if __name__=='__main__':unittest.main(verbosity=2)

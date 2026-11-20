@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # G04_G05_FAST_TRACK_V1322 — G04/G05 một nhiệm vụ, một QC tổng thể
 
 > **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
@@ -39,3 +55,5 @@ Trong package `work-package.v2`, `task_ids` là các task **FULL** trên; `bound
 - Sau mỗi phần nội bộ thực hiện được, **tiếp tục ngay trong cùng WORK_PACKAGE_ID** mà không xin duyệt từng trang, batch, đoạn review, clip. Khi giới hạn phiên chat bắt buộc dừng, ghi checkpoint `PARTIAL`; người dùng chủ động “Tiếp tục gói” đúng scope chứ không “duyệt lại”. Không giả rằng ChatGPT chạy nền.
 - `tools/g04_g05_atomic_policy.py` cung cấp kiểm cấu trúc package và metadata QC, không chứng minh media đã xem hoặc thông tin web thực; ChatGPT vẫn phải quan sát thực tế trước khi ghi VERIFIED.
 - Giữ tất cả sửa giới hạn, không xóa dữ liệu nguồn hoặc sửa checkpoint lịch sử, và không nới quyền cài/tải/đăng YouTube/chuyển media.
+
+</details>

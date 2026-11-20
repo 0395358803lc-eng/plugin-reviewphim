@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # VISUAL_EDITING — REVIEW_PHIM v1.3.0: nhịp dựng, EDL, transform và QC
 
 **Chỉ dùng sau phê duyệt giai đoạn G08/G09/G10/G11/G12/G14 tương ứng.** Đây là tài liệu điều phối của ChatGPT, không phải một AI editor chạy tự động. Không cài FFmpeg, không gọi Remotion và không sửa nguồn chỉ nhờ đọc tài liệu. Ưu tiên `SESSION_ORCHESTRATION.md`, `EVIDENCE_SCHEMA.md`, `SCENE_MATCHING.md` và `ACCEPTANCE_QC.md`.
@@ -91,3 +107,5 @@ Ghi issue trong `qc/visual_editing_qc.json` và bảng `.md`: `issue_id`, `sever
 | G14 chỉ spot-check | chưa xem/nghe liên tục | NOT_VERIFIED |
 | Video nguồn 1080p nhưng xuất 1080p | chỉ container size | không được gọi upscale AI/native |
 | Logo nằm trên mặt nhân vật | overlay che chứng cứ | NEEDS_FIX; logo sau transform |
+
+</details>

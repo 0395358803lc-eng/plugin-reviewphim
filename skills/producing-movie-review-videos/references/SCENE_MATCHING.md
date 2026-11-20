@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # SCENE_MATCHING — G08 đúng phim, đúng nhân vật, hành động và cảm xúc
 
 **Mấu chốt:** khớp ngữ nghĩa không đồng nghĩa khớp timestamp/ASR. G08 phải **tái dùng** `scene_catalog.json`, `visual_events.json`, `evidence_index.json`, `story_map.json` từ G04, không nghiên cứu lại toàn bộ phim nếu dữ liệu đã xác minh và hash nguồn trùng. Đọc `EVIDENCE_SCHEMA.md` và `FILM_UNDERSTANDING.md` trước thao tác.
@@ -48,3 +64,5 @@ Ví dụ schema (không phải dữ liệu thật):
 **Gate SHOT_SELECTION_READY:** mọi beat trọng yếu có clip đã xem, `VERIFIED_VISUAL`, `0 <= src_in_s < src_out_s <= source_duration`; không còn actor/action/storyline sai hoặc orphaned critical beats. Nếu chưa READY, G08 báo các beat thiếu và cần rà soát; **không cho G09 bắt đầu**, dù model similarity cao. Gate nội dung không phải quyền duyệt G09.
 
 **Trường hợp V35:** máy ghép frame chỉ là `CANDIDATE`; đối chiếu chuỗi chuyển động + nhân vật/thoại mới có thể kết luận cùng cảnh. Không lấy một điểm trùng ảnh làm bằng chứng chắc chắn.
+
+</details>

@@ -8,7 +8,7 @@ The caller must verify the actual remote path/file identity and the human messag
 from __future__ import annotations
 
 import hashlib
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 import struct
 from typing import Any
 
@@ -24,6 +24,8 @@ def handoff_destination(job_dir: str | Path, image_extension: str = 'png') -> di
     """Get the one user-facing target path; no filesystem side effect."""
     if image_extension not in {'png', 'jpg', 'jpeg'}:
         raise ValueError('Only downloaded PNG/JPG files are accepted; never rename extensions')
+    if not Path(job_dir).is_absolute() and not PureWindowsPath(str(job_dir)).is_absolute():
+        raise ValueError('approved absolute JOB_DIR required')
     target=Path(job_dir)/'assets'/('youtube_thumbnail.'+image_extension)
     return {'relative_path':'assets/'+target.name, 'absolute_path':str(target),
             'requires_user_copy':True, 'automatic_transfer_required':False,
@@ -72,7 +74,8 @@ def _reply(status: str, **more:Any) -> dict[str,Any]:
 
 def verify_drop(job_dir: str | Path, *, title: str, approval: dict[str,Any],
                 visual: dict[str,Any], image_name: str='youtube_thumbnail.png',
-                expected_source_sha256: str | None = None, production_first: bool = False) -> dict[str,Any]:
+                expected_source_sha256: str | None = None, production_first: bool = False,
+                image_relative_path: str | None = None) -> dict[str,Any]:
     """Check a user-supplied remote file, with approval and honest provenance.
 
     A successful result is ONLY `FILE_ACCEPTED` for Q11B final visual/decode QC,
@@ -83,7 +86,12 @@ def verify_drop(job_dir: str | Path, *, title: str, approval: dict[str,Any],
     root=Path(job_dir)
     if _unsafe_reparse(root) or _unsafe_reparse(root/'assets'):
         return _reply('BLOCKED_PATH')
-    image=root/'assets'/image_name
+    rel=image_relative_path or 'assets/'+image_name
+    rp=PurePosixPath(rel)
+    if (str(rp)!=rel or rp.is_absolute() or '..' in rp.parts or '\\' in rel or ':' in rel or rp.name!=image_name):
+        return _reply('BLOCKED_PATH')
+    image=root/rel
+    if any(_unsafe_reparse(p) for p in image.parents):return _reply('BLOCKED_PATH')
     if _unsafe_reparse(image):
         return _reply('BLOCKED_PATH')
     if not image.is_file():
@@ -91,7 +99,7 @@ def verify_drop(job_dir: str | Path, *, title: str, approval: dict[str,Any],
     try:
         resolved_root=root.resolve(strict=True)
         resolved_image=image.resolve(strict=True)
-        if resolved_image.parent != (resolved_root/'assets'):
+        if resolved_root not in resolved_image.parents:
             return _reply('BLOCKED_PATH')
         if image.stat().st_size <=0 or image.stat().st_size>MAX_IMAGE_BYTES:
             return _reply('BLOCKED_IMAGE_SIZE')
@@ -127,7 +135,7 @@ def verify_drop(job_dir: str | Path, *, title: str, approval: dict[str,Any],
     # Explicit new mode: verify the actual user-supplied file, not subjective
     # thumbnail aesthetics. The one-time user placement/title binding remains.
     return _reply('FILE_ACCEPTED',ready_for_q11b_qc=not production_first,
-                  relative_path='assets/'+image_name,absolute_path=str(image),
+                  relative_path=rel,absolute_path=str(image),
                   image_sha256=digest,image_width=w,image_height=h,
                   title_sha256=td,approval_ref=approval['approval_ref'],
                   image_identity=('SHA256_MATCH' if expected_source_sha256 else

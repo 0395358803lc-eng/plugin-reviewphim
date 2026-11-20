@@ -7,7 +7,7 @@ def test_manifests_keep_identity_app_and_version():
     root=json.loads((ROOT/'plugin.json').read_text(encoding='utf-8'))
     legacy=json.loads((ROOT/'.codex-plugin/plugin.json').read_text(encoding='utf-8'))
     assert root['name']==legacy['name']=='review-phim'
-    assert root['version']==legacy['version']=='1.3.25'
+    assert root['version']==legacy['version']=='1.3.26'
     assert root['extensions']['com.openai']['apps']==legacy['apps']=='./.app.json'
     assert root['extensions']['com.openai']['interface']==legacy['interface']
     assert len(root['extensions']['com.openai']['interface']['defaultPrompt'])==9
