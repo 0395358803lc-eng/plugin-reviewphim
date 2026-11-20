@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # SIMPLE_G02_TEXT_QC_V1316 — G02 = tạo transcript toàn phim + một QC văn bản
 
 > **QUY TẮC ƯU TIÊN CAO NHẤT CHO NGHIỆM THU G02 kể từ REVIEW_PHIM v1.3.16.** Thay thế mọi ràng buộc trước đây bắt G02 phải nghe lại từng câu thoại, mở 17 cụm, phân loại `MATERIAL_REVIEW` hoặc rà nghi vấn cốt truyện mới có thể PASS. Áp dụng cho dự án mới và cho **gói chuyển trạng thái mới được người dùng duyệt** ở dự án cũ. Không tự sửa checkpoint có sẵn, không tự mở quyền G03/G04.
@@ -31,3 +47,5 @@ QC G02 chỉ cần 4 nhóm: `SOURCE_AND_FULL_ASR_COMPLETE`, `TRANSCRIPT_EXISTS_N
 4. Trình transcript hoàn thành và đề xuất phê duyệt riêng để ChatGPT dịch (`G03.TRANSLATE.FULL`). Không tự phê duyệt thay người dùng.
 
 **Ranh giới:** Quy tắc này chỉ thay G02/Q02. G01, G03, G04, G05 và G06–G15 tiếp tục theo các hợp đồng hiện hành, không cài/tải/CPU fallback/xóa file khi không được duyệt.
+
+</details>

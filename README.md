@@ -1,3 +1,13 @@
+# REVIEW_PHIM v1.3.26
+
+Production First → User Review → Targeted Revision.
+
+Xem [hướng dẫn v1.3.26](skills/producing-movie-review-videos/references/PRODUCTION_RELIABILITY_V1326.md)
+và [báo cáo bàn giao](RELEASE_V1326.md).
+Giữ nguyên App/định danh plugin. Không tự cài bản này vào tài khoản hay xuất bản video.
+
+## Tài liệu phiên bản trước
+
 # REVIEW_PHIM — AI Movie Review Producer
 
 Full source snapshot of the current **REVIEW_PHIM v1.3.25** ChatGPT plugin, synchronized on 2026-11-20.

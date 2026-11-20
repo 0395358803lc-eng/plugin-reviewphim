@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # WORKSPACE_REUSE_POLICY — P00-5: Kiểm kê và tái sử dụng có kiểm chứng
 
 **Hiệu lực:** áp dụng ngay từ P00-5, ưu tiên cao hơn mọi câu trước đây trong `HARDWARE_PROFILE.md`, `INSTALLATION_CATALOG.md`, `SESSION_ORCHESTRATION.md`, `WORKSPACE_BOOTSTRAP.md`, `WORKFLOW.md`, `DEFAULTS_AND_TOOLS.md` hoặc `SKILL.md` nói rằng phải cài mới từng `JOB_DIR`, tuyệt đối không kiểm kê hoặc cấm tái dùng ngoài `JOB_DIR`. Chỉ thay đổi nguồn **đọc/thực thi** runtime đã duyệt; không thay giới hạn **ghi** vào JOB_DIR, danh mục 11 ID hay quy trình phê duyệt.
@@ -57,3 +73,5 @@ Sau hardware profile, bảng đủ **11 ID** `ID | công cụ/model | vị trí 
 7. Nhiều workspace ứng viên → chọn bằng bằng chứng, không tự lấy bản mới nhất mơ hồ.
 8. Không có workspace cũ → MISSING, trình cài mới, không quét PATH toàn hệ thống.
 9. Cùng root có phim cũ nhưng transcript/output cũ → không dùng dữ liệu phim cũ làm sản phẩm mới.
+
+</details>

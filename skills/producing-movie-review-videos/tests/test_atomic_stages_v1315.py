@@ -54,10 +54,10 @@ class AtomicStageTests(unittest.TestCase):
     def test_versions_and_entrypoint(self):
         manifest=json.loads((PLUGIN/'plugin.json').read_text(encoding='utf-8'))
         codex=json.loads((PLUGIN/'.codex-plugin/plugin.json').read_text(encoding='utf-8'))
-        self.assertEqual(manifest['version'],'1.3.25');self.assertEqual(codex['version'],'1.3.25')
+        self.assertEqual(manifest['version'],'1.3.26');self.assertEqual(codex['version'],'1.3.26')
         self.assertEqual(manifest['extensions']['com.openai']['apps'],'./.app.json')
         self.assertEqual(codex['apps'],'./.app.json')
         prompt=' '.join(manifest['extensions']['com.openai']['interface']['defaultPrompt'])
-        self.assertIn('ATOMIC_STAGES_V1315',prompt)
-        self.assertIn('G05_NARRATIVE_ONLY_V1317',prompt)
+        self.assertIn('PRODUCTION_FIRST_V1325',prompt)
+        self.assertIn('PRODUCTION_RELIABILITY_V1326',prompt)
 if __name__=='__main__':unittest.main(verbosity=2)

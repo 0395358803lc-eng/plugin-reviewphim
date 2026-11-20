@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from work_package_state import (
-    ContractError, acquire_lock, plan_hash, release_lock, transition, validate_approval,
+    ContractError, acquire_lock, plan_hash, release_lock, transition, validate_approval, verify_lock,
 )
 
 
@@ -62,6 +62,12 @@ def approve_and_start(
     if state.get("status") == "RUNNING":
         if state.get("approved_plan_hash") != actual_hash or not state.get("approval_ref"):
             raise ContractError("running job does not match approved package")
+        verify_lock(Path(plan['JOB_DIR'])/'logs'/'work_package.lock',owner=owner,
+                    package_id=plan['WORK_PACKAGE_ID'],plan_hash=actual_hash,device_id=plan['deviceId'])
+        if plan.get('execution_mode')=='PRODUCTION_FIRST_V1325' and (Path(plan['JOB_DIR'])/'logs'/'project_flow_v1325.jsonl').exists():
+            current=gate_module._production_flow_module().read_checkpoint(plan['JOB_DIR'])
+            return {'outcome':'ALREADY_RUNNING' if current['status']=='RUNNING' else 'CURRENT_STATE',
+                    'state':current,'dispatch_now':False}
         return {"outcome": "ALREADY_RUNNING", "state": dict(state), "dispatch_now": False}
     if state.get("status") not in ("PROPOSED", "APPROVED"):
         raise ContractError("package is not eligible for initial start; use guarded resume")
@@ -93,6 +99,15 @@ def approve_and_start(
             raise ContractError("newly created work-package lock metadata mismatch")
         running = transition({**approved, "lock_owner": owner}, "RUNNING", event="start")
         running = {**running, "lock_verified": True}
+        if plan.get('execution_mode')=='PRODUCTION_FIRST_V1325':
+            running.update(execution_mode=plan['execution_mode'],WORK_PACKAGE_ID=plan['WORK_PACKAGE_ID'])
+            flow=gate_module._production_flow_module()
+            if (job_dir/'logs'/'project_flow_v1325.jsonl').exists():
+                prior=flow.read_checkpoint(job_dir)
+                if prior.get('status')!='REVISION_REQUESTED' or plan.get('revision_of')!=prior.get('plan_hash'):
+                    raise ContractError('existing project ledger requires an explicit revision; do not replace it')
+                running['ledger_seq']=prior['ledger_seq']
+            flow.authenticate_context(plan,running,owner)
     except Exception:
         release_lock(lock_path, owner=owner)
         raise

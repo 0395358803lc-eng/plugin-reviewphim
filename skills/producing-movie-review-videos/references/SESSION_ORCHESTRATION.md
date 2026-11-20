@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # SESSION_ORCHESTRATION — REVIEW_PHIM v1.3.12: package state và resume
 
 **QUY TẮC ƯU TIÊN:** `WORKFLOW_CONSISTENCY_V1312.md` về P00/G01–G15, state, human gates và chống trùng; `SMART_BATCH_APPROVAL.md` về quyền gói; `MICROTASK_ACCEPTANCE_REPAIR.md` về QC; `GPU_FIRST_APPROVAL.md` GPU-FIRST; `WORKSPACE_REUSE_POLICY.md` reuse an toàn. `WORK_PACKAGE_ID` được người dùng duyệt, microtask là đơn vị nội bộ. Không tự phê duyệt.
@@ -26,3 +42,5 @@
 ## Báo cáo
 
 Chỉ kết luận `PACKAGE_PASS` khi toàn bộ microtask/QA và human gate PASS. Một bảng **QC tổng hợp của gói**: `WORK_PACKAGE_ID | n/N đã QC PASS | pending/human gate | output + hashes | repair_count | status | quyết định cần người dùng`. Không trình 30 nút B001–B030. Chỉ một nút cho **Phê duyệt gói**, **Tiếp tục gói**, hoặc quyết định human gate thực; nếu cần mở scope phải trình package plan mới.
+
+</details>

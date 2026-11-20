@@ -3,6 +3,21 @@ name: one-click-review-execution
 description: Use alongside producing-movie-review-videos whenever REVIEW_PHIM plans, approves, resumes, or executes a work package; turns one approved plan into immediate scoped execution without a second deployment approval.
 ---
 
+## Production First v1.3.26
+
+Khi gói đã duyệt chọn `PRODUCTION_FIRST_V1325`, đọc
+[chính sách chuẩn](../producing-movie-review-videos/references/PRODUCTION_FIRST_AUTONOMOUS_V1325.md)
+và [khôi phục v1.3.26](../producing-movie-review-videos/references/PRODUCTION_RELIABILITY_V1326.md).
+Dùng `project_flow_v1325.py`; không lấy QC=PASS, cổng duyệt hay vòng sửa lỗi
+thẩm mỹ trong nhánh Legacy dưới đây làm điều kiện chuyển bước.
+Chỉ dừng khi thiếu đầu ra dùng được, quyền hoặc đầu vào thiết yếu.
+
+## Legacy — chỉ điều phối gói cũ
+
+<details><summary>Quy tắc lịch sử</summary>
+
+
+
 # REVIEW_PHIM v1.3.25 — ONE APPROVAL → PRODUCTION FIRST AUTO FLOW
 
 
@@ -35,3 +50,5 @@ Sau khi `approve_and_start` nhận `STARTED`, trước **mỗi** lệnh thực t
 ## G11B manual thumbnail (v1.3.24)
 
 Bắt buộc đọc `skills/producing-movie-review-videos/references/MANUAL_THUMBNAIL_HANDOFF_V1324.md`. ChatGPT tạo ảnh, người dùng tải rồi đặt vào một đích `JOB_DIR/assets/youtube_thumbnail.png`/JPG đúng định dạng; xác nhận **“ĐÃ CHÉP ẢNH VÀ DUYỆT G11B”** được kiểm theo tin nhắn thật và file/hash thật. Đây là human gate chọn ảnh G11B_THUMBNAIL, không phải phê duyệt triển khai lần 2. Không transfer tự động, không mở package/approval phụ chỉ vì đang chờ file; giữ `WAITING_FOR_HUMAN_APPROVAL` và substatus `WAITING_FOR_USER_IMAGE_PLACEMENT` cho đến khi người dùng đặt ảnh. Q11B/G12 vẫn cần QC và guard v1.3.23.
+
+</details>

@@ -1,4 +1,27 @@
-# REVIEW_PHIM v1.3.25 — PRODUCTION FIRST + AUTONOMOUS PROJECT FLOW
+# REVIEW_PHIM v1.3.26 — Production First
+
+Mode ổn định: `PRODUCTION_FIRST_V1325`. Quy trình đang áp dụng là
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+**Đọc và thực thi tài liệu v1.3.26; phần v1.3.25 bên dưới chỉ lưu lịch sử.**
+
+Production First → User Review → Targeted Revision. Không dùng Q01–Q15.
+`OUTPUT_EXISTS` phải có file thật/hash khớp; MP4 phải qua FFprobe và giải mã
+FFmpeg được cấp quyền. Không nhận cờ executor làm bằng chứng thay thế.
+`DONE` tiếp tục; retry hữu hạn trong quyền/ngân sách; đọc khóa thật trước resume.
+G05/G07/G10/G11A/G11B tạo proposal rồi mới chờ duyệt sử dụng nếu chưa ủy quyền.
+G11B chờ người dùng chép ảnh, kiểm file xong tiếp tục G12 cùng gói.
+`FINAL_REVIEW` chỉ sau video dùng được; người dùng chọn `ACCEPTED` hoặc
+`REVISION_REQUESTED`. Revision giữ video cũ, chỉ dựng phần bị ảnh hưởng.
+Host/Remote Desktop Commander thực thi công cụ thật; Python không tự gọi công
+cụ ChatGPT và không tự chạy nền qua lượt chat.
+
+Ledger append-only là nguồn trạng thái chuẩn. `work_package_state.can_dispatch`
+nhận plan Production First sẽ route về project_flow, không áp QC Legacy.
+Không sửa checkpoint cũ thiếu provenance. CLI v1.3.26 yêu cầu `--owner` thật.
+
+## Lịch sử v1.3.25 — không dùng làm chỉ dẫn thực thi v1.3.26
+
+<details><summary>Thiết kế trước bản sửa reliability</summary>
 
 **CHÍNH SÁCH ƯU TIÊN CAO NHẤT cho gói mới có `execution_mode=PRODUCTION_FIRST_V1325`.** Thay thế toàn bộ các vòng QC về chất lượng nội dung, hình, giọng, web, storyboard, shot, pilot, edit và G14 trước khi có phim hoàn chỉnh. Các tài liệu v1.3.11–v1.3.24 vẫn dùng cho **gói legacy** hoặc tham khảo cách sản xuất, nhưng **Q01–Q15 không còn là cổng bắt buộc trong chế độ mới**. Không sửa các checkpoint/approval lịch sử; muốn chuyển gói đang chạy phải lập gói mới được người dùng duyệt rõ phạm vi.
 
@@ -42,3 +65,5 @@
 ## 5. Nghiệm thu bản nâng cấp và giới hạn kiểm thử
 
 Test cần chứng minh: full stage traversal trong scope với callback executor, không Qxx; fail khi file/hash sai; không vượt scope/lock/device/approval; STOP khi thiếu quyền, không auto xóa; checkpoint/restart skip DONE và phát hiện file bị sửa; thumbnail user copy giữ nguyên; G15 → `FINAL_REVIEW` rồi user `ACCEPTED` hoặc targeted `REVISION_REQUESTED`. Kiểm thử Python giả lập output **không** là nghiệm thu phim thật hoặc việc MCP App đã tự dispatch mọi lệnh; phải thử một bộ phim thực có log/MP4/thumbnail sau khi gói đã triển khai.
+
+</details>

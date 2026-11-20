@@ -146,7 +146,10 @@ def test_symlink_file_not_followed(tmp_path):
     m,title,approval,visual=inputs(tmp_path)
     real=tmp_path/'source.png';make_png(real)
     (tmp_path/'assets').mkdir()
-    (tmp_path/'assets'/'youtube_thumbnail.png').symlink_to(real)
+    try:(tmp_path/'assets'/'youtube_thumbnail.png').symlink_to(real)
+    except OSError as exc:
+        if getattr(exc,'winerror',None)==1314:pytest.skip('Windows account lacks symbolic-link privilege')
+        raise
     assert verify(tmp_path,title,approval,visual)['status']=='BLOCKED_PATH'
 
 
@@ -203,5 +206,8 @@ def test_assets_symlink_folder_is_not_followed(tmp_path):
     m,title,approval,visual=inputs(tmp_path)
     outside=tmp_path/'elsewhere'
     make_png(outside/'youtube_thumbnail.png')
-    (tmp_path/'assets').symlink_to(outside, target_is_directory=True)
+    try:(tmp_path/'assets').symlink_to(outside, target_is_directory=True)
+    except OSError as exc:
+        if getattr(exc,'winerror',None)==1314:pytest.skip('Windows account lacks symbolic-link privilege')
+        raise
     assert verify(tmp_path,title,approval,visual)['status']=='BLOCKED_PATH'

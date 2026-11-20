@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # MANUAL_THUMBNAIL_HANDOFF_V1324 — ChatGPT tạo ảnh, người dùng tự chép vào máy từ xa
 
 > **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
@@ -26,3 +42,5 @@
 ## Hợp đồng kiểm thử
 
 `tools/manual_thumbnail_handoff_v1324.py` kiểm file allowlist dưới JOB_DIR, tránh symlink phổ biến, signature PNG/JPEG, kích thước/aspect, SHA, user action và hình ChatGPT đã thực sự thấy. **Trả `FILE_ACCEPTED` không đồng nghĩa Q11B PASS**: còn bắt buộc kiểm giải mã/hiển thị và ghi QC thật. Các ca thiếu file, chưa có user approval, sai title, sai source hash, file giả/khác tỷ lệ, symlink phải bị chặn. Không tự động chuyển ảnh sang máy, không chỉnh sửa file trên máy chỉ bằng policy helper. Plugin v1.3.24 không tự nghiệm thu thiết bị thực; phải đo trên project thật.
+
+</details>

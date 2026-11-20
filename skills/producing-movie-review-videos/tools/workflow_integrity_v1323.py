@@ -215,7 +215,8 @@ def validate_package_completion(plan:dict[str,Any],state:dict[str,Any]) -> Decis
         # Do NOT call work_package_state.transition(..., PACKAGE_PASS) here:
         # legacy transition requires QC and creative gates, while this mode's
         # terminal is FINAL_REVIEW followed by the real user's acceptance.
-        if state.get('status') not in {'FINAL_REVIEW','PACKAGE_DONE'}:
+        terminal={'FINAL_REVIEW','ACCEPTED','REVISION_REQUESTED'} if 'G15' in plan['allowed_stages'] else {'PACKAGE_DONE'}
+        if state.get('status') not in terminal:
             return Decision(False,'Production First scoped stages are not complete')
         staged={**state,'status':'RUNNING'}
         result=_production_flow_module().decide_next(plan,staged,session_owner=state.get('lock_owner',''))

@@ -20,9 +20,9 @@ class WholeFilmTranscriptContract(unittest.TestCase):
     def test_manifest_versions_and_app_bindings(self):
         main=json.loads((PLUG/'plugin.json').read_text(encoding='utf-8'))
         codex=json.loads((PLUG/'.codex-plugin/plugin.json').read_text(encoding='utf-8'))
-        self.assertEqual(main['version'],'1.3.25');self.assertEqual(codex['version'],'1.3.25')
+        self.assertEqual(main['version'],'1.3.26');self.assertEqual(codex['version'],'1.3.26')
         self.assertEqual(main['extensions']['com.openai']['apps'],'./.app.json');self.assertEqual(codex['apps'],'./.app.json')
-        self.assertIn('WHOLE_FILM_TRANSCRIPT_V1314',' '.join(main['extensions']['com.openai']['interface']['defaultPrompt']))
+        self.assertIn('PRODUCTION_FIRST_V1325',' '.join(main['extensions']['com.openai']['interface']['defaultPrompt']))
     def test_plan_generator_is_single_scope_no_batched_task_list(self):
         path=ROOT/'tools/whole_film_transcript_policy.py'
         spec=importlib.util.spec_from_file_location('whole_policy',path)

@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # REVIEW_PHIM v1.3.19 — G12 Intro Card 2s + logo
 
 > **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
@@ -20,3 +36,5 @@
 
 ## Giới hạn
 Plugin chỉ sản xuất và bàn giao thumbnail/metadata/intro; không tự upload hay đổi YouTube Studio. Muốn thumbnail trang chủ trùng ảnh đã tạo phải **upload custom thumbnail** theo YouTube Help; YouTube có thể thay đổi hiển thị theo bối cảnh.
+
+</details>

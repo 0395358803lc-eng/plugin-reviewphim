@@ -1,0 +1,195 @@
+{
+  "pytest_exit": 0,
+  "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+  "command": [
+    "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "D:\\Downloads\\plugin-reviewphim-main\\plugin-reviewphim-main\\skills\\producing-movie-review-videos\\tests",
+    "--tb=short",
+    "-rs",
+    "--basetemp",
+    "C:\\Users\\Admin\\AppData\\Local\\Temp\\review-v1326-dzcd670o\\pytest",
+    "--junitxml",
+    "D:\\Downloads\\plugin-reviewphim-main\\plugin-reviewphim-main\\.test-runs\\final-evidence\\pytest.xml"
+  ],
+  "videos": {
+    "integration-v1.mp4": {
+      "sha256": "d768890e800661e0ff553c15e447d443e4760b2649158e9c4a206da950bdd094",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "mpeg4",
+            "codec_long_name": "MPEG-4 part 2",
+            "profile": "Simple Profile",
+            "codec_type": "video",
+            "codec_tag_string": "mp4v",
+            "codec_tag": "0x7634706d",
+            "mime_codec_string": "mp4v.20",
+            "width": 160,
+            "height": 90,
+            "coded_width": 160,
+            "coded_height": 90,
+            "has_b_frames": 0,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 1,
+            "chroma_location": "left",
+            "quarter_sample": "false",
+            "divx_packed": "false",
+            "id": "0x1",
+            "r_frame_rate": "12/1",
+            "avg_frame_rate": "12/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 6144,
+            "duration": "0.500000",
+            "bit_rate": "6240",
+            "nb_frames": "6",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc63.1.102 mpeg4"
+            }
+          }
+        ],
+        "format": {
+          "filename": "D:\\Downloads\\plugin-reviewphim-main\\plugin-reviewphim-main\\.test-runs\\final-evidence\\integration-v1.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "0.500000",
+          "size": "1309",
+          "bit_rate": "20944",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2mp41",
+            "encoder": "Lavf63.1.102"
+          }
+        }
+      },
+      "decode_exit": 0,
+      "decode_stderr": ""
+    },
+    "integration-v2.mp4": {
+      "sha256": "8492ac93ec77b9bc5cc14bd6308b6b4283cdf2ff708bd865ff2ea1a517fa5b14",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "mpeg4",
+            "codec_long_name": "MPEG-4 part 2",
+            "profile": "Simple Profile",
+            "codec_type": "video",
+            "codec_tag_string": "mp4v",
+            "codec_tag": "0x7634706d",
+            "mime_codec_string": "mp4v.20",
+            "width": 160,
+            "height": 90,
+            "coded_width": 160,
+            "coded_height": 90,
+            "has_b_frames": 0,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 1,
+            "chroma_location": "left",
+            "quarter_sample": "false",
+            "divx_packed": "false",
+            "id": "0x1",
+            "r_frame_rate": "12/1",
+            "avg_frame_rate": "12/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 6144,
+            "duration": "0.500000",
+            "bit_rate": "6240",
+            "nb_frames": "6",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc63.1.102 mpeg4"
+            }
+          }
+        ],
+        "format": {
+          "filename": "D:\\Downloads\\plugin-reviewphim-main\\plugin-reviewphim-main\\.test-runs\\final-evidence\\integration-v2.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "0.500000",
+          "size": "1309",
+          "bit_rate": "20944",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2mp41",
+            "encoder": "Lavf63.1.102"
+          }
+        }
+      },
+      "decode_exit": 0,
+      "decode_stderr": ""
+    }
+  },
+  "ffmpeg": "ffmpeg version 9.0.2-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+  "scope": "Local orchestration integration with real decodable video. Business-stage fixtures do not certify remote models or film content."
+}

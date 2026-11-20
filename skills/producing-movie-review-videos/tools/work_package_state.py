@@ -63,6 +63,10 @@ def expand_tasks(plan: dict[str, Any]) -> list[str]:
 def plan_hash(plan: dict[str, Any]) -> str:
     """SHA256 on deterministic UTF-8 JSON; no NaN, unknown installs or wildcards."""
     _require(isinstance(plan, dict), "plan must be an object")
+    if plan.get('execution_mode')=='PRODUCTION_FIRST_V1325':
+        flow=_production_flow()
+        flow.validate_plan(plan)
+        return flow.hash_plan(plan)
     _require("plan_hash" not in plan, "self-referential plan hash")
     for k in ("WORK_PACKAGE_ID", "schema_version", "deviceId", "JOB_DIR", "SOURCE_MOVIE", "source_hash", "allowed_stages", "allowed_read_roots", "allowed_write_roots", "repair_budget", "human_gates", "install_budget", "allowed_executables_and_models", "expected_outputs", "acceptance_criteria", "stop_conditions"):
         _require(k in plan, f"plan missing {k}")
@@ -103,8 +107,13 @@ def validate_approval(plan: dict[str, Any], approval: dict[str, Any]) -> bool:
     return True
 
 
-def can_dispatch(state: dict[str, Any], task_id: str, *, session_owner: str, expected_source_hash: str | None = None) -> bool:
+def can_dispatch(state: dict[str, Any], task_id: str, *, session_owner: str, expected_source_hash: str | None = None, plan=None) -> bool:
     """Internal checks; no user authorization is inferred by a PASS or a file."""
+    if state.get('execution_mode')=='PRODUCTION_FIRST_V1325' or (plan or {}).get('execution_mode')=='PRODUCTION_FIRST_V1325':
+        if plan is None:return False
+        if expected_source_hash is not None and expected_source_hash!=plan['source_hash']:return False
+        decision=_production_flow().decide_next(plan,state,session_owner=session_owner)
+        return bool(decision.get('allowed') and not decision.get('needs_user') and decision.get('next_task')==task_id)
     if state.get("status") != "RUNNING":
         return False
     if not state.get("approval_ref") or state.get("plan_hash") != state.get("approved_plan_hash"):
@@ -146,6 +155,8 @@ def transition(state: dict[str, Any], next_status: str, *, event: str,
                approval: dict[str, Any] | None = None) -> dict[str, Any]:
     """Guard transitions; never executes work or changes approval scope."""
     old = state.get("status")
+    if state.get('execution_mode')=='PRODUCTION_FIRST_V1325' and old not in {'PROPOSED','APPROVED'}:
+        raise ContractError('Production First transitions must use project_flow; ledger is canonical')
     _require(old not in TERMINAL, "terminal state immutable; new package required")
     if old == "PROPOSED" and next_status == "APPROVED":
         _require(event == "user_approved" and plan is not None and approval is not None,
@@ -237,7 +248,7 @@ def acquire_lock(path: Path, *, owner: str, package_id: str, plan_hash: str, dev
     fd=None
     try:
         fd=os.open(str(path), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-        data=json.dumps({"owner_run_id":owner,"owner":owner,"package_id":package_id,"deviceId":device_id,"plan_hash":plan_hash},sort_keys=True).encode("utf-8")
+        data=json.dumps({"owner_run_id":owner,"owner":owner,"package_id":package_id,"WORK_PACKAGE_ID":package_id,"deviceId":device_id,"plan_hash":plan_hash},sort_keys=True).encode("utf-8")
         os.write(fd,data)
         os.fsync(fd)
     except FileExistsError as exc:
@@ -262,3 +273,33 @@ def release_lock(path: Path, *, owner: str) -> None:
         raise ContractError("lock cannot be verified") from exc
     _require(current.get("owner") == owner, "lock belongs to another session")
     path.unlink()
+
+
+def _production_flow():
+    from importlib.util import module_from_spec,spec_from_file_location
+    spec=spec_from_file_location('project_flow_v1325',Path(__file__).with_name('project_flow_v1325.py'))
+    module=module_from_spec(spec);spec.loader.exec_module(module)
+    return module
+
+
+def verify_lock(path: Path, *, owner: str, package_id: str, plan_hash: str, device_id: str):
+    """Read the real lock on every dispatch/resume, never a state boolean."""
+    path=Path(path)
+    for parent in (path,*path.parents):
+        _require(not parent.is_symlink() and not getattr(parent,'is_junction',lambda:False)(), 'lock path redirects')
+    try:record=json.loads(path.read_text(encoding='utf-8'))
+    except (OSError,ValueError) as exc:raise ContractError('actual work-package lock missing or invalid') from exc
+    _require(isinstance(record,dict),'invalid lock record')
+    for key,value in (('owner',owner),('package_id',package_id),('deviceId',device_id),('plan_hash',plan_hash)):
+        _require(bool(value) and record.get(key)==value,'actual lock mismatch: '+key)
+    _require(record.get('WORK_PACKAGE_ID',package_id)==package_id,'lock WORK_PACKAGE_ID mismatch')
+    return record
+
+
+def recover_missing_lock(path: Path, *, owner: str, package_id: str, plan_hash: str,
+                         device_id: str, recovery_ref: str, verify_inactive):
+    """Host must verify no active writer; never removes or replaces any existing lock."""
+    _require(bool(recovery_ref) and callable(verify_inactive),'authenticated recovery and process inspection required')
+    _require(verify_inactive(owner,package_id) is True,'writer inactivity not verified')
+    acquire_lock(path,owner=owner,package_id=package_id,plan_hash=plan_hash,device_id=device_id)
+    return verify_lock(path,owner=owner,package_id=package_id,plan_hash=plan_hash,device_id=device_id)

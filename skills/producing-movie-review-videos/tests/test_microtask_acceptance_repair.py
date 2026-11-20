@@ -21,5 +21,5 @@ class TestMicrotaskAcceptanceRepair(unittest.TestCase):
    self.assertIn(s,self.qc)
  def test_version(self):
   p=json.loads((R.parents[1]/'plugin.json').read_text('utf-8'))
-  self.assertEqual(p['version'],'1.3.12')
+  self.assertEqual(p['version'],'1.3.26')
 if __name__=='__main__':unittest.main()

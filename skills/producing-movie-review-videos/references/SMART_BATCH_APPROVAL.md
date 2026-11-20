@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # SMART_BATCH_APPROVAL — Phê duyệt theo gói, QC theo microtask (v1.3.12)
 
 **ĐỌC `WORKFLOW_CONSISTENCY_V1312.md` TRƯỚC.** Quy tắc state machine, thứ tự G09/G10, P00, human gate, migration và chống trùng lấy từ tài liệu đó. **HỢP ĐỒNG ƯU TIÊN CAO về granularity phê duyệt (không bao giờ nới quyền).** Đọc trước `MICROTASK_ORCHESTRATION.md`, `MICROTASK_ACCEPTANCE_REPAIR.md`, `SESSION_ORCHESTRATION.md`, `APPROVAL_TRANSLATION_AUDIO.md`, `WORKFLOW.md`, `INSTALLATION_CATALOG.md` và `WORKSPACE_REUSE_POLICY.md`. Tài liệu này **ưu tiên cao hơn** tất cả câu cũ yêu cầu "1 phê duyệt = 1 microtask", "sau QC PASS phải dừng để xin duyệt Mnn/Bxxx kế tiếp", "mỗi lần sửa nhỏ đều duyệt mới". Những giới hạn bảo vệ nguồn, P00, quyền cài đặt, GPU-FIRST, người dùng chấp thuận nội dung và nhu cầu ChatGPT thực sự nghe/xem không đổi.
@@ -48,3 +64,5 @@ Quy mô gói do deliverable quyết định, không do số Mnn. Ưu tiên: P00 
 Mỗi package ghi `logs/work_package_state.json` (snapshot atomic) và `logs/work_package_ledger.jsonl` (append-only), gồm `WORK_PACKAGE_ID`, `plan_hash`, `approval_ref`, `deviceId`, `JOB_DIR`, `source_hash`, `allowed_scope`, `task_ids`, `completed_count`, `pending_count`, `qc_summary`, `blockers`, `updated_at`. Mỗi task tiếp tục ghi `microtask_state.json`, `microtask_ledger.jsonl` và `qc/microtasks/<TASK_ID>/acceptance.v*.json/.md`. State `PROPOSED → APPROVED → RUNNING → `PARTIAL / WAITING_FOR_JOB / WAITING_FOR_AUDIO_UPLOAD / WAITING_FOR_HUMAN_APPROVAL / PACKAGE_PASS / NEEDS_FIX / NOT_VERIFIED / BLOCKED`, `CANCELLED` terminal. `PACKAGE_PASS` phải có mọi task QC PASS, human gates approved, package final QC; G15 delivery PASS độc lập với delete optional. Chống double-click bằng exclusive lock + idempotency event_id theo plan/task/input/attempt, không tự cướp lock stale.`. Không chạy nếu `approval_ref` không trỏ tới sự đồng ý thật của user.
 
 Ví dụ output cuối: `G03.PKG01: 24/24 batch QC PASS; transcript_vi.jsonl 944/944 segment; translation_flags 7 cần nghe, status NOT_VERIFIED; link/đường dẫn audio để user upload; chưa chạy G04`. Chỉ coi hoàn tất khi cả cổng nghe cần thiết cũng đạt. Nếu lô đang dở, nút Tiếp tục gói phải nêu rõ phần việc còn lại thay vì bắt user duyệt B001, B002 lặp đi lặp lại.
+
+</details>

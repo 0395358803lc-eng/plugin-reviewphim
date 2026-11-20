@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # REVIEW_PHIM v1.3.19 — G11A YouTube Metadata (sau G11, trước G11B)
 
 ## Mục tiêu và phạm vi
@@ -17,3 +33,5 @@ Thêm bước **G11A.YOUTUBE_METADATA.FULL** trong G01–G15 giữ nguyên, ch�
 
 ## QC và cổng
 Q11A kiểm đủ nguồn G04/G05/G11, tên phim/chủ thể, độ dài tiêu đề, nội dung mô tả, hashtag, hash. `G11A_METADATA_READY` chỉ sau Q11A đạt + người dùng chọn và duyệt tiêu đề. Thiếu duyệt -> `WAITING_FOR_HUMAN_APPROVAL`; không tự G11B. Title thay đổi sau G11B làm invalidate ảnh, văn bản ảnh, clip intro và G12–G15 liên quan; không ghi đè phiên bản đã duyệt.
+
+</details>

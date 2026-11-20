@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # MICROTASK_ACCEPTANCE_REPAIR — QC từng microtask, báo cáo gói, sửa có giới hạn
 
 **ĐỌC `WORKFLOW_CONSISTENCY_V1312.md` TRƯỚC.** **Thay thế quy tắc xin duyệt sửa từng issue nhỏ của bản cũ:** đọc SMART_BATCH_APPROVAL.md trước. **QC từng microtask** là bắt buộc; **QC tổng hợp của gói** là báo cáo ưu tiên cho người dùng. Mọi TASK_ID P00/G01–G15 có `acceptance_criteria` đo được (2–6 tiêu chí), `criterion_id`, `expected`, `actual`, `test_method`, `required_evidence`, `evidence_refs`, `blocking=true/false`, kết quả `PASS/FAIL/NOT_VERIFIED/BLOCKED`. Không lấy log `exit=0` hay có file làm bằng chứng chất lượng nội dung.
@@ -26,3 +42,5 @@ Mỗi lỗi ghi `issue_id`, `severity=BLOCKING/MAJOR/MINOR`, `failed_criteria`, 
 `PACKAGE_PASS` chỉ khi mọi TASK_ID bắt buộc PASS, coverage đủ, Qxx và gate người dùng đã đáp ứng. Chỉ báo một `QC tổng hợp của gói`: bao nhiêu task/batch đạt, output+hash, thay đổi/sửa chữa, cảnh báo, các tiêu chí chưa chứng minh. QC nội bộ tồn tại để truy xuất nhưng không nhân số nút phê duyệt. Chưa hoàn tất thì báo trạng thái thực `PARTIAL/WAITING_FOR_HUMAN_APPROVAL/WAITING_FOR_AUDIO_UPLOAD/WAITING_FOR_JOB/BLOCKED` và nút phù hợp; chỉ khi user chủ động resume và quyền còn hiệu lực mới dùng nút **Tiếp tục gói** theo SMART_BATCH_APPROVAL.md; không phê duyệt lại các task đã nằm trong scope.
 
 Ngăn task khác ngoài package scope, không tự chạy nền. G05 duyệt kịch bản, G07 giọng và G10 pilot là quyết định của người dùng; G15 xóa riêng. Chỉ xác nhận ChatGPT đã nghe khi user thực sự upload audio và ChatGPT nghe/đối chiếu được.
+
+</details>

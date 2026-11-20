@@ -3,6 +3,61 @@ name: producing-movie-review-videos
 description: Use when the user invokes REVIEW_PHIM, works with remote movie workspace/transcript/translation/audio, or produces Vietnamese movie recap videos G01–G15 including YouTube metadata, thumbnail and intro.
 ---
 
+# REVIEW_PHIM v1.3.26 — Production First → User Review → Targeted Revision
+
+Với gói mới đã duyệt `execution_mode=PRODUCTION_FIRST_V1325`, dùng duy nhất
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](references/PRODUCTION_FIRST_AUTONOMOUS_V1325.md)
+và [PRODUCTION_RELIABILITY_V1326](references/PRODUCTION_RELIABILITY_V1326.md).
+`tools/project_flow_v1325.py` là state machine chuẩn, CLI là cầu nối cho host.
+Đọc nhánh Production First trong các tham chiếu; **không thực thi các quy tắc Legacy bên dưới**.
+Gói cũ tiếp tục đúng chế độ đã duyệt, không tự chuyển schema/checkpoint.
+
+P00 → G01 nguồn → G02 ASR → G03 dịch → G04 hiểu phim → G05 kịch bản → G06 beats
+→ G07 giọng → G08 shots → G09 timeline → G10 pilot → G11 dựng full
+→ G11A metadata → G11B thumbnail → G12 intro → G13 nhạc → G14 kiểm MP4
+→ G15 bàn giao → `FINAL_REVIEW` → người dùng `ACCEPTED`/`REVISION_REQUESTED`.
+
+Một phê duyệt gói rõ phạm vi cho phép chạy các task liên tục bằng công cụ thật.
+Không dùng Q01–Q15, QC từng scene/beat/WAV/shot/clip/batch, web crosscheck bắt buộc,
+hay G14 ba trục làm điều kiện chuyển bước. Không tự mở gói sửa thẩm mỹ trước phản hồi.
+MP4 phải có container/video stream/duration hợp lệ và giải mã được bằng công cụ đã duyệt.
+`technical_ready=True` không đủ. File bắt buộc thiếu hoặc hỏng → `FAILED`.
+`WARNING` ghi lại cho nghiệm thu cuối, không chặn sản xuất.
+
+G05/G07/G10/G11A/G11B tạo đề xuất trước; nếu chưa có ủy quyền sáng tạo cụ thể,
+chỉ chờ khi cần sử dụng đề xuất đó. G07 chưa được duyệt chỉ tạo giọng mẫu theo
+`stage_proposals.G07` và trả `PROPOSAL_READY`; sau duyệt tiếp tục cùng task G07
+làm WAV toàn phần, dùng lại mẫu đã lưu.
+G11B tạo ảnh thật, cho tải và nêu một đích Windows đầy đủ trong JOB_DIR;
+người dùng tự chép. Xác nhận và kiểm file thật xong tiếp tục G12 trong cùng gói,
+không xin duyệt triển khai lần hai, không tạo lại ảnh trong lúc chờ chép.
+
+Trước mỗi lần chạy/resume kiểm khóa thật và SHA-256 nguồn. Tác vụ DONE chỉ được
+tái dùng khi đủ approval_ref, WORK_PACKAGE_ID, plan_hash, inputs/outputs và file thật.
+Retry hữu hạn đúng `repair_budget`; thiếu quyền thì dừng. Ledger append-only là
+nguồn trạng thái chuẩn; snapshot có thể khôi phục từ ledger. Không tự chạy nền.
+Revision chỉ chạy phần phụ thuộc bị ảnh hưởng, dùng đường dẫn mới, giữ video cũ.
+
+P00: chọn thiết bị, phim, JOB_DIR và **CHỌN THƯ MỤC CHỨA LOGO** trước
+**KIỂM TRA PHẦN CỨNG MÁY CHỦ**, kiểm inventory chỉ đọc trong REVIEW_PHIM_WORKSPACE
+được cấp quyền, rồi **TRÌNH DANH MỤC CÀI ĐẶT CHUẨN** nếu cần.
+Ưu tiên GPU-FIRST theo [GPU_FIRST_APPROVAL](references/GPU_FIRST_APPROVAL.md);
+CPU smoke không chứng minh GPU. Không tự đổi driver/PATH, cài mới hay CPU fallback.
+Các công cụ chưa được cấp quyền **không được tự cài/tự chạy**.
+Không mặc định `hflip=false`, tỷ lệ 2,04, 24 FPS hay crop 8%; dùng profile được duyệt.
+Phê duyệt xóa riêng G15_DELETE, không ghi đè nguồn hay checkpoint cũ.
+
+Các skill `analyze-video-editing`, `editing-montage`, `find-broll` hỗ trợ sản xuất
+theo [EDITORIAL_SKILLS_INTEGRATION](references/EDITORIAL_SKILLS_INTEGRATION.md),
+không khôi phục cổng QC Legacy. Gói mới dùng hướng dẫn v1.3.26;
+`templates/WORK_PACKAGE_BRIEF.md` và `templates/WORK_PACKAGE_FINAL.md` là mẫu Legacy,
+không lấy yêu cầu QC của chúng áp cho Production First.
+
+## Nhánh Legacy — chỉ dành cho gói đã duyệt theo chế độ cũ
+
+<details>
+<summary>Quy tắc lịch sử; không áp dụng cho PRODUCTION_FIRST_V1325</summary>
+
 # REVIEW_PHIM v1.3.25 — Production First + Autonomous Project Flow
 
 
@@ -63,3 +118,5 @@ description: Use when the user invokes REVIEW_PHIM, works with remote movie work
 - [GPU_FIRST_APPROVAL](references/GPU_FIRST_APPROVAL.md), [WORKSPACE_REUSE_POLICY](references/WORKSPACE_REUSE_POLICY.md), [INSTALLATION_CATALOG](references/INSTALLATION_CATALOG.md), [WORKSPACE_BOOTSTRAP](references/WORKSPACE_BOOTSTRAP.md), [HARDWARE_PROFILE](references/HARDWARE_PROFILE.md).
 - [MICROTASK_ORCHESTRATION](references/MICROTASK_ORCHESTRATION.md), [MICROTASK_ACCEPTANCE_REPAIR](references/MICROTASK_ACCEPTANCE_REPAIR.md), [SESSION_ORCHESTRATION](references/SESSION_ORCHESTRATION.md), [APPROVAL_TRANSLATION_AUDIO](references/APPROVAL_TRANSLATION_AUDIO.md).
 - `tools/youtube_metadata_policy.py` và `tools/thumbnail_intro_policy.py` chỉ QC cấu trúc/dữ liệu offline, **không phải** công cụ tạo hình, render, nghe/xem hay cấp quyền. Không mặc định thời lượng review, `hflip`, FPS, crop % hay số shot/beat; intro được người dùng chọn 2 giây là ngoại lệ đã xác nhận.
+
+</details>

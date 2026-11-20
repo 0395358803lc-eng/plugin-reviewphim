@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # GPU_FIRST_APPROVAL — GPU-FIRST và chủ động trình nút phê duyệt
 
 **HỢP ĐỒNG BẮT BUỘC của REVIEW_PHIM cho P00, A01–A08/O01–O03 và G01–G15.** Ưu tiên tài liệu này trước mọi hướng dẫn cũ cho phép tùy ý chọn CPU khi GPU còn có thể hoạt động. Không thay danh mục ID, không nới quyền cài đặt, không vượt `MICROTASK_ACCEPTANCE_REPAIR.md`, và **không tự động cài** hoặc tự động phê duyệt.
@@ -49,3 +65,5 @@
 ## 6. Ví dụ kiểm tra bắt buộc (RTX 4060, A04)
 
 Đã cài Faster-Whisper 1.2.1 + CTranslate2 4.9.0 và CPU INT8 transcribe thành công, nhưng GPU test báo `Library cublas64_12.dll is not found or cannot be loaded`. Kết luận đúng: `QC_STATUS=PASS` cho phần sửa PyAV nếu đủ tiêu chí, **`GPU_STATUS=GPU_NEEDS_SETUP`**, `gpu_smoke=FAIL`, GPU **chưa sẵn sàng**. Hành động kế **mặc định** là nút **Phê duyệt P00-06.A04.GPU.PLAN** (xác minh cuBLAS/cuDNN tương thích, checksum, runtime riêng trong JOB_DIR) thay vì nút A05. Chỉ sau phê duyệt kế hoạch, triển khai runtime GPU bằng phê duyệt riêng rồi smoke test CUDA. Không tự cài GPU runtime, không chạy G01–G15.
+
+</details>

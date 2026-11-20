@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # INSTALLATION_CATALOG — 11 ID bất biến, tái sử dụng có kiểm chứng trước khi cài
 
 **Hợp đồng mới:** Danh mục A01–A08/O01–O03 là danh sách thành phần cần có cho quy trình, **không còn có nghĩa phải cài lại từ đầu mỗi `JOB_DIR`**. Sau P00-5, đối chiếu 11 ID với workspace cũ được phép theo `WORKSPACE_REUSE_POLICY.md`. Mọi câu cũ bắt buộc cài mới hoặc cấm khảo sát runtime trong workspace cũ đều bị thay thế; cấm kiểm tra và dùng package ngoài phạm vi root đã duyệt. Không xóa hay thay mã ID khi phát hiện bộ cài hợp lệ.
@@ -39,3 +55,5 @@ Bảng phải bao phủ đủ 11 ID: `ID | tên/phiên bản | source_workspace 
 - `cwd=JOB_DIR` mới; nếu reuse, dùng executable/model **đường dẫn tuyệt đối** ở `REUSE_SOURCE` cũ với quyền chỉ đọc, tuyệt đối không sửa/cập nhật nguồn; nếu cài mới, đích ghi trong JOB_DIR.
 - `TEMP`, `TMP`, `TMPDIR`, `HF_HOME`, `HUGGINGFACE_HUB_CACHE`, `XDG_CACHE_HOME`, `TORCH_HOME`, `PIP_CACHE_DIR`, `PYTHONPYCACHEPREFIX`, `npm_config_cache`, `COREPACK_HOME`, `PLAYWRIGHT_BROWSERS_PATH` và browser profile đều về JOB_DIR mới. Không `pip install --user`, `npm -g`, `npx` auto-download hoặc thay PATH hệ thống. Nếu runtime ghi vào workspace cũ thì **không cho reuse**.
 - Lưu mapping `JOB_DIR/logs/runtime_reuse_manifest.json` có deviceId, ID, path, hashes, version, QC, approval và backend; lưu log/QC từng ID, không ghi đè lịch sử. Sau test báo `REUSED_AND_TESTED`/`INSTALLED_AND_TESTED`/`NEEDS_FIX`/`NOT_VERIFIED`/`BLOCKED`; dừng trước G01.
+
+</details>

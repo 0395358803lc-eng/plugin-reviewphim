@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # HARDWARE_PROFILE — P00-5: Phần cứng và bộ cài REVIEW_PHIM_WORKSPACE cũ
 
 ## Mục tiêu
@@ -38,3 +54,5 @@ Với VRAM chưa biết, không đoán GPU_READY; GPU dưới ~6 GB phải rất
 ## Báo cáo và quyền
 
 Thứ tự: (1) hardware `[deviceId | CPU | cores/threads | RAM | GPU/VRAM | Windows | disk | UNKNOWN]`; (2) khả năng CPU/GPU; (3) workspace cũ đã được phép khám phá và rủi ro; (4) bảng đủ 11 ID với trạng thái và tối ưu; (5) **nút duyệt kiểm chứng/dùng lại/cài mới** theo `WORKSPACE_REUSE_POLICY.md`. `REUSE_READY` chỉ được gán sau chứng cứ phù hợp, và vẫn cần duyệt dùng lại. Không có root cũ không có nghĩa phần cứng có lỗi: ghi MISSING, dự toán cài mới. Mỗi P00 task có QC theo `MICROTASK_ACCEPTANCE_REPAIR.md`, dừng trước G01.
+
+</details>

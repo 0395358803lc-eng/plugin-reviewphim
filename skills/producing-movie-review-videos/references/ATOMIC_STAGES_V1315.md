@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # ATOMIC_STAGES_V1315 — G01, G03, G05: mỗi giai đoạn một đầu việc hoàn chỉnh
 
 > **BỔ SUNG ƯU TIÊN G05 v1.3.18:** [G05_WEB_STORY_CROSSCHECK_V1318](G05_WEB_STORY_CROSSCHECK_V1318.md) yêu cầu ChatGPT **sau khi viết xong review phải tìm web bằng công cụ ChatGPT**, đối chiếu synopsis/plot ít nhất hai nguồn độc lập với G04 và review, kết luận có cần sửa trong cùng `G05.REVIEW.FULL`, trước **một Q05**. Không lấy web thay phim, không tự chèn tình tiết chưa đủ chứng cứ, không đưa dữ liệu kiểm chứng vào lời kể; giữ `G05_NARRATIVE_ONLY_V1317`, sáu bước, `NO_STAGE_SPLIT`, và cổng người dùng `G05_SCRIPT` riêng. Không có web thật / còn xung đột quan trọng thì không tự `REVIEW_STORY_READY`.
@@ -47,3 +63,5 @@ Không phát sinh những task bắt buộc `G01.M01/G01.M02`, `G03.M01/G03.M02.
 - **Các giai đoạn G04, G06, G07, G08, G09, G10, G11, G12, G13, G14, G15 và P00 giữ nguyên quy trình hiện tại**, bao gồm batch nội bộ có giới hạn, QC/approval theo microtask nếu hiện hành yêu cầu. Đặc biệt G04 xem hình/clip thật; G08 `SHOT_SELECTION_READY` và chỉ chọn clip `VERIFIED_VISUAL` đúng actor/action; G07_VOICE và G10_PILOT vẫn chặn theo đúng quyền, G09 preview trước G11 render, G14 quality technical/story/visual đủ, G15_DELETE cần phê duyệt riêng.
 - Giữ khóa atomic `work_package.lock` không cướp, read/write roots, `plan_hash`, source/input hashes, GPU-FIRST, không tự cài/tải, không CPU fallback ngầm, không sửa phim nguồn hoặc dữ liệu đã duyệt; source movie chỉ read-only.
 - **Fatman (2020):** G01 đã có checkpoint/Q01 từ trước thì chỉ reuse khi chứng cứ hợp lệ, không đánh lại PASS theo cảm tính. G02 plan mới `G02.ASR.FULL` vẫn cần duyệt; đổi plugin **không tự chạy** G02/G03/G05, không mở rộng scope của gói G02 cũ. Các `NOT_VERIFIED` lịch sử B001/B003 giữ nguyên; mọi phân loại lại cần một gói mới được duyệt.
+
+</details>

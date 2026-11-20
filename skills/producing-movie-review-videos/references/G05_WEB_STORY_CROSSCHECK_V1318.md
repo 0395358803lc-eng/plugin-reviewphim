@@ -1,3 +1,19 @@
+## Chọn chế độ trước khi đọc
+
+**PRODUCTION_FIRST_V1325 đã được duyệt:** dùng
+[PRODUCTION_FIRST_AUTONOMOUS_V1325](PRODUCTION_FIRST_AUTONOMOUS_V1325.md) và
+[PRODUCTION_RELIABILITY_V1326](PRODUCTION_RELIABILITY_V1326.md).
+Không dùng QC/PASS, duyệt từng scene/beat/WAV/shot/batch, web crosscheck hay ba trục
+G14 dưới đây để chặn tiến độ. Chỉ kiểm file thực dùng được, hash, lỗi chương trình
+và quyền thao tác. Không ghi đè bản cũ; xóa cần phê duyệt xóa riêng.
+Các chi tiết kỹ thuật sản xuất vẫn có thể tham khảo, nhưng điều phối và nghiệm thu
+tuân theo chính sách Production First. Không tự suy diễn ủy quyền sáng tạo.
+
+## Nhánh Legacy — quy tắc dưới đây chỉ điều phối gói chế độ cũ
+
+<details>
+<summary>Hướng dẫn lịch sử; không áp cho Production First</summary>
+
 # G05_WEB_STORY_CROSSCHECK_V1318 — ChatGPT tìm web sau bản REVIEW và đối chiếu câu chuyện trước Q05
 
 > **ƯU TIÊN CAO NHẤT CHO MỌI G05 TỪ REVIEW_PHIM v1.3.18.** Giữ nguyên `G05_NARRATIVE_ONLY_V1317`, toàn bộ sáu bước REVIEW, `NO_STAGE_SPLIT`, một `G05.REVIEW.FULL`, một Q05 tổng thể và `G05_SCRIPT` cần người dùng duyệt riêng. Đây **không phải một giai đoạn mới hoặc phê duyệt mới**. Sau khi có bản kể hoàn chỉnh, **ChatGPT phải sử dụng trực tiếp công cụ tìm kiếm web của mình** để lấy giới thiệu/tóm tắt/cốt truyện của đúng phim, đối chiếu và đánh giá có cần sửa hay không **trước khi nghiệm thu Q05**.
@@ -51,3 +67,5 @@
 ```
 
 `Q05_WEB_STORY_CROSSCHECK` có thể trả `PASS`, `PASS_WITH_WARNINGS`, `NEEDS_REVIEW`, `NOT_VERIFIED`, `BLOCKED`. **Đây là kiểm cấu trúc**, không tự chứng nhận ChatGPT đã xem trang web, không kiểm bằng chứng tên phim mà trang mạng thực sự cung cấp; trách nhiệm đọc và trích dẫn thuộc ChatGPT. Bất kỳ Q05 tổng thể chỉ đạt `REVIEW_STORY_READY` khi **cả** `Q05_NARRATIVE_ONLY` và `Q05_WEB_STORY_CROSSCHECK` đạt theo điều kiện trên, bản đồ chứng cứ đúng, G04/các human gates giữ nguyên. Quy tắc **không áp hồi tố** cho Fatman G05 cũ; muốn sửa phải có kế hoạch/gói mới, giữ raw/đầu ra/checkpoint cũ append-only.
+
+</details>
