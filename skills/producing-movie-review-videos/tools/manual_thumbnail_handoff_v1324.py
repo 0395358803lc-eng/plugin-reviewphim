@@ -72,7 +72,7 @@ def _reply(status: str, **more:Any) -> dict[str,Any]:
 
 def verify_drop(job_dir: str | Path, *, title: str, approval: dict[str,Any],
                 visual: dict[str,Any], image_name: str='youtube_thumbnail.png',
-                expected_source_sha256: str | None = None) -> dict[str,Any]:
+                expected_source_sha256: str | None = None, production_first: bool = False) -> dict[str,Any]:
     """Check a user-supplied remote file, with approval and honest provenance.
 
     A successful result is ONLY `FILE_ACCEPTED` for Q11B final visual/decode QC,
@@ -118,15 +118,20 @@ def verify_drop(job_dir: str | Path, *, title: str, approval: dict[str,Any],
         approval.get('title_sha256')==td and approval.get('user_confirmed_placement') is True and
         approval.get('user_selected_file')==image_name):
         return _reply('WAITING_FOR_HUMAN_APPROVAL')
-    if not isinstance(visual,dict) or not (
-        visual.get('generated_image_seen_by_chatgpt') is True and
-        visual.get('text_checked_by_chatgpt') is True and
-        isinstance(visual.get('source_image_evidence_ref'),str) and visual['source_image_evidence_ref'].strip()):
-        return _reply('NOT_VERIFIED')
-    return _reply('FILE_ACCEPTED',ready_for_q11b_qc=True,
+    if not production_first:
+        if not isinstance(visual,dict) or not (
+            visual.get('generated_image_seen_by_chatgpt') is True and
+            visual.get('text_checked_by_chatgpt') is True and
+            isinstance(visual.get('source_image_evidence_ref'),str) and visual['source_image_evidence_ref'].strip()):
+            return _reply('NOT_VERIFIED')
+    # Explicit new mode: verify the actual user-supplied file, not subjective
+    # thumbnail aesthetics. The one-time user placement/title binding remains.
+    return _reply('FILE_ACCEPTED',ready_for_q11b_qc=not production_first,
                   relative_path='assets/'+image_name,absolute_path=str(image),
                   image_sha256=digest,image_width=w,image_height=h,
                   title_sha256=td,approval_ref=approval['approval_ref'],
                   image_identity=('SHA256_MATCH' if expected_source_sha256 else
                                   'USER_ATTESTED_NOT_BYTE_MATCHED'),
-                  next_action='Actual remote image decode/visual QC then record Q11B; never assume PASS')
+                  next_action=('Record artifact DONE and continue Production First; user reviews final video'
+                               if production_first else
+                               'Actual remote image decode/visual QC then record Q11B; never assume PASS'))

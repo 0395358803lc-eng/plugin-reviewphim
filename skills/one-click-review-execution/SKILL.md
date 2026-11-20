@@ -3,7 +3,10 @@ name: one-click-review-execution
 description: Use alongside producing-movie-review-videos whenever REVIEW_PHIM plans, approves, resumes, or executes a work package; turns one approved plan into immediate scoped execution without a second deployment approval.
 ---
 
-# REVIEW_PHIM v1.3.24 — ONE APPROVAL → GATED IMMEDIATE EXECUTION
+# REVIEW_PHIM v1.3.25 — ONE APPROVAL → PRODUCTION FIRST AUTO FLOW
+
+
+**GÓI MỚI v1.3.25:** Nếu `execution_mode=PRODUCTION_FIRST_V1325` đã được user duyệt trong gói, sau `approve_and_start` gọi ngay executor cho task đầu theo `tools/project_flow_v1325.py::run_until_hinge` và `workflow_integrity_v1323.py` (mode route); không chạy vòng QC hay sinh phê duyệt từng stage. Có thể chạy tất cả stage đủ quyền trong cùng lượt; checkpoint cho resume. Dừng đúng `WAITING_USER` (quyền/hình người dùng copy), `FAILED` (không có output kỹ thuật), hoặc `FINAL_REVIEW` sau G15. **Không giả remote execution:** callback là hành động của ChatGPT với các công cụ được cấp quyền, không có chức năng tự gọi MCP từ Python. `G15_DELETE`, nguồn và cài mới vẫn cần quyền. Đọc [PRODUCTION_FIRST_AUTONOMOUS_V1325](../producing-movie-review-videos/references/PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các đoạn QC/gate bên dưới chỉ áp dụng gói legacy không chọn mode mới.
 
 **BẮT BUỘC ÁP DỤNG** khi người dùng khởi động, phê duyệt hay tiếp tục `REVIEW_PHIM`. Quy tắc này có **ưu tiên cao hơn** mọi hướng dẫn cũ trong `WORKFLOW_CONSISTENCY_V1312.md`, `SMART_BATCH_APPROVAL.md`, `SESSION_ORCHESTRATION.md`, `MICROTASK_ORCHESTRATION.md` và `WORK_PACKAGE_BRIEF.md` **chỉ về việc tách “phê duyệt kế hoạch” / “cho phép triển khai” thành hai lần bấm**. Không làm thay đổi 15 giai đoạn, G11A/G11B, yêu cầu kiểm tra, QA, quyền truy cập hoặc các human gates.
 

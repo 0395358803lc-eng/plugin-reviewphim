@@ -1,5 +1,8 @@
 # REVIEW_PHIM v1.3.21 — ONE_APPROVAL_START_POLICY (lập kế hoạch + triển khai một nút)
 
+> **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
+
+
 ## Mục tiêu và phạm vi ưu tiên
 
 Thay hai lượt **(a) phê duyệt kế hoạch** và **(b) phê duyệt/ra lệnh triển khai cùng chính kế hoạch** bằng **một lần phê duyệt gói**. Các bước kỹ thuật `PROPOSED → APPROVED → RUNNING` vẫn tồn tại trong state machine để có dấu vết; `APPROVED → RUNNING` là **chuyển trạng thái nội bộ không cần thêm tin nhắn phê duyệt hay một nút START thứ hai**. Hướng dẫn này ghi đè ví dụ cũ bắt người dùng ấn thêm “triển khai”, nhưng **không** ghi đè hợp đồng quyền, xác minh, stop conditions, phê duyệt nội dung hay QC.

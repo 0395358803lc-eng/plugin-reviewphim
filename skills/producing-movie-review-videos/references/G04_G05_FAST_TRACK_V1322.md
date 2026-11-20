@@ -1,5 +1,8 @@
 # G04_G05_FAST_TRACK_V1322 — G04/G05 một nhiệm vụ, một QC tổng thể
 
+> **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
+
+
 **ƯU TIÊN CAO NHẤT TRONG G04/G05 từ REVIEW_PHIM v1.3.22.** Quy định này **ghi đè** mọi ví dụ chia `G04.Mnn[.Bxxx]`, `G05.Mnn[.Bxxx]`, QC lẻ từng batch, kế hoạch phụ tự phát và các quy trình cũ trong `MICROTASK_ORCHESTRATION.md`, `FILM_UNDERSTANDING.md`, `REVIEW_STORYTELLING.md`, `WORKFLOW.md`, `SMART_BATCH_APPROVAL.md`, `MICROTASK_ACCEPTANCE_REPAIR.md`, `WORKFLOW_CONSISTENCY_V1312.md` và các mẫu cũ **chỉ về granularity/độ sâu phân tích/điểm dừng nội bộ của G04, G05**. Các giới hạn thiết bị, nguồn phim, phê duyệt gói v1.3.21, quyền đọc/ghi, media QC thật v1.3.20, hash, lock, repair budget, và human gate `G05_SCRIPT` không thay đổi. Không tự ý chuyển trạng thái lịch sử hoặc mở rộng gói đã duyệt.
 
 ## Hợp đồng bắt buộc: không sinh việc mới theo từng cảnh/đoạn

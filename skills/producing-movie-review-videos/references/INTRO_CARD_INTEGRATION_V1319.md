@@ -1,5 +1,8 @@
 # REVIEW_PHIM v1.3.19 — G12 Intro Card 2s + logo
 
+> **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
+
+
 > **ƯU TIÊN v1.3.24:** [MANUAL_THUMBNAIL_HANDOFF_V1324.md](MANUAL_THUMBNAIL_HANDOFF_V1324.md) quy định ảnh từ ChatGPT được **người dùng chép thủ công** vào `JOB_DIR/assets/youtube_thumbnail.png` hoặc JPG, sau đó ChatGPT kiểm file/hashes và lưu `publish/thumbnail_approval.json:image_relpath`. G12 lấy file đúng `image_relpath` đã được duyệt, không mặc định phải có `assets/intro_card.png` hay kênh remote upload. G11B Q11B/human gate vẫn bắt buộc trước G12.
 
 ## Thứ tự chuẩn

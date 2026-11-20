@@ -1,5 +1,8 @@
 # MICROTASK_ORCHESTRATION — v1.3.23: thống nhất điều phối G01–G15
 
+> **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
+
+
 **ƯU TIÊN V1.3.23:** Luôn dùng `FULL_WORKFLOW_INTEGRITY_V1323.md` và `tools/workflow_integrity_v1323.py::decide_dispatch` trước **mỗi** task. Qxx/approval chỉ là điều kiện; stage/task đã PASS và hash thật đúng thì reuse thay vì tạo lô mới; G07 mẫu giọng không thay G07_VOICE, Q09 trước pilot G10, Q10+G10_PILOT trước full render G11, Q12 trước mix G13, Q13 trước G14.
 
 **Quy tắc hiện hành:** đọc `ONE_APPROVAL_START_POLICY_V1321.md`, `G04_G05_FAST_TRACK_V1322.md`, `ATOMIC_STAGES_V1315.md`, `SMART_BATCH_APPROVAL.md`, `WORKFLOW_CONSISTENCY_V1312.md` và `MICROTASK_ACCEPTANCE_REPAIR.md` theo thứ tự ưu tiên chuyên biệt. Người dùng duyệt `WORK_PACKAGE_ID` hữu hạn, rồi ChatGPT triển khai ngay các task đủ điều kiện trong cùng lượt; không có vòng phê duyệt kế hoạch/triển khai thứ hai. `Gxx.Mnn[.Bxxx]` là mã **nội bộ** đối với các stage còn dùng batch, không phải nút phê duyệt. Không tự chạy nền qua lượt chat.

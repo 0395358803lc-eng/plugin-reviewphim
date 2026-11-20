@@ -9,7 +9,7 @@ class WorkflowConsistency(unittest.TestCase):
             self.assertIn('WORKFLOW_CONSISTENCY_V1312.md',d(path))
         for path in ('plugin.json','.codex-plugin/plugin.json'):
             manifest=json.loads((R.parents[1]/path).read_text('utf-8'))
-            self.assertEqual(manifest['version'],'1.3.24')
+            self.assertEqual(manifest['version'],'1.3.25')
             self.assertIn('state machine',manifest['description'].lower())
     def test_g09_limited_to_preview_before_g10_pilot_and_g11_full(self):
         p=d('references/MICROTASK_ORCHESTRATION.md')

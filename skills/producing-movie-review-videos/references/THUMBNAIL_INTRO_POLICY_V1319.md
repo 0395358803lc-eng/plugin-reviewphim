@@ -1,5 +1,8 @@
 # REVIEW_PHIM v1.3.19 — G11B Thumbnail + Poster bằng ChatGPT
 
+> **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
+
+
 > **CẬP NHẬT BẮT BUỘC v1.3.24:** [MANUAL_THUMBNAIL_HANDOFF_V1324.md](MANUAL_THUMBNAIL_HANDOFF_V1324.md) thay thế yêu cầu chuyển ảnh tự động tại bước 5. Người dùng sẽ tải ảnh từ ChatGPT và **tự chép** vào đúng `JOB_DIR/assets/youtube_thumbnail.png` (hoặc `.jpg` thật). Chờ xác nhận đặt file + duyệt G11B trong một tin nhắn, rồi ChatGPT kiểm lại file thật/hash/visual QC. Không báo lỗi `BLOCKED_TRANSFER` chỉ vì Remote Desktop không có chức năng upload.
 
 ## Mục tiêu

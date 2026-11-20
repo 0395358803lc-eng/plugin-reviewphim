@@ -1,5 +1,8 @@
 # FULL_WORKFLOW_INTEGRITY_V1323 — REVIEW_PHIM v1.3.23
 
+> **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
+
+
 > **BỔ SUNG v1.3.24:** Khi G11B tạo thumbnail ChatGPT, dùng [MANUAL_THUMBNAIL_HANDOFF_V1324.md](MANUAL_THUMBNAIL_HANDOFF_V1324.md): người dùng tự tải/chép vào JOB_DIR; Q11B chờ file thật và một thông điệp xác nhận+duyệt, không đòi upload tự động. G12 chỉ dùng ảnh theo `image_relpath/image_sha256` đã được khóa; state core giữ `WAITING_FOR_HUMAN_APPROVAL` cho đến khi user quyết định. Đây không phải lượt duyệt lại triển khai.
 
 **ƯU TIÊN CAO NHẤT CHO ĐIỀU PHỐI P00–G15 (bao gồm G11A/G11B).** Đọc cùng `ONE_APPROVAL_START_POLICY_V1321.md`, `G04_G05_FAST_TRACK_V1322.md`, `MEDIA_EVIDENCE_HANDOFF_V1320.md`, `WORKFLOW_CONSISTENCY_V1312.md` và `ACCEPTANCE_QC.md`. Tài liệu này ghi đè **chỉ** các chỉ dẫn cũ bắt dừng xin duyệt mỗi Gxx/Mnn/Bxxx, chuyển plan→execution thành hai lần click, hoặc dùng nhiều quy tắc QC không thống nhất. **Không** ghi đè quyền người dùng, media thực, hash/lock, giới hạn cài đặt, script/voice/pilot/thumbnail approvals, hay quy tắc bảo toàn dữ liệu cũ.

@@ -1,5 +1,8 @@
 # MANUAL_THUMBNAIL_HANDOFF_V1324 — ChatGPT tạo ảnh, người dùng tự chép vào máy từ xa
 
+> **v1.3.25 — PRODUCTION_FIRST_V1325:** Với gói mới đã duyệt mode này, ưu tiên [PRODUCTION_FIRST_AUTONOMOUS_V1325.md](PRODUCTION_FIRST_AUTONOMOUS_V1325.md). Các Qxx/QC thẩm mỹ, nghe/xem, web và phê duyệt sáng tạo giữa giai đoạn trong tài liệu dưới đây là **LEGACY-ONLY**; mode mới dùng DONE đầu ra kỹ thuật và chờ user nghiệm thu cuối. Giữ nguyên quyền thiết bị/source/install/delete và thao tác chép thumbnail thật.
+
+
 **ƯU TIÊN CAO NHẤT cho G11B và đầu vào ảnh của G12, từ REVIEW_PHIM v1.3.24.** Ghi đè yêu cầu truyền ảnh tự động và `BLOCKED_TRANSFER` mặc định trong `THUMBNAIL_INTRO_POLICY_V1319.md`, `INTRO_CARD_INTEGRATION_V1319.md`, `SKILL.md` và mọi tài liệu cũ **chỉ về phương thức chuyển ảnh ChatGPT → JOB_DIR**. Giữ nguyên quyền thiết bị, nguồn phim chỉ đọc, Q11A/G11A_METADATA, hình thật, Q11B/G11B_THUMBNAIL, Q12, file/hash, lock, visual QC, G14, quyền xử lý video và không chuyển quyền phê duyệt thành tự động.
 
 ## Mục tiêu — chỉ một thao tác chuyển thủ công

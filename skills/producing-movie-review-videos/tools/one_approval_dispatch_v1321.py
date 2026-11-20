@@ -43,6 +43,8 @@ def approve_and_start(
     spec.loader.exec_module(gate_module)
     try:
         gate_module.validate_new_package(plan)
+        # v1.3.25 Production First: the above delegates to finite stage and
+        # creative-delegation validation without creating aesthetic QC gates.
     except ValueError as exc:
         raise ContractError(f'v1.3.23 package scope rejected: {exc}') from exc
     actual_hash = plan_hash(plan)

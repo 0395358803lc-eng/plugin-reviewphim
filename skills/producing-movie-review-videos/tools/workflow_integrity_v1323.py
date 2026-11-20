@@ -70,8 +70,20 @@ def expand_tasks(plan: dict[str,Any]) -> list[str]:
     return out
 
 
+def _production_flow_module():
+    """Keep v1.3.24 legacy gates untouched; mode selection must be explicit."""
+    from importlib.util import module_from_spec, spec_from_file_location
+    spec=spec_from_file_location('project_flow_v1325',Path(__file__).with_name('project_flow_v1325.py'))
+    if spec is None or spec.loader is None:raise ValueError('Production First module unavailable')
+    module=module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def validate_new_package(plan: dict[str,Any]) -> list[str]:
     """Validate task granularity and stage scope; never auto-migrate legacy jobs."""
+    if isinstance(plan,dict) and plan.get('execution_mode')=='PRODUCTION_FIRST_V1325':
+        return _production_flow_module().validate_plan(plan)
     required={'WORK_PACKAGE_ID','schema_version','deviceId','JOB_DIR','SOURCE_MOVIE',
               'source_hash','allowed_stages','task_ids','allowed_read_roots',
               'allowed_write_roots','repair_budget','install_budget','human_gates'}
@@ -119,6 +131,13 @@ def decide_dispatch(plan:dict[str,Any],state:dict[str,Any],task_id:str,
     `legacy=True` requires a separately verified legacy package record, not just
     a self-declared flag. It does NOT bypass stage QC, approvals or hash checks.
     """
+    if isinstance(plan,dict) and plan.get('execution_mode')=='PRODUCTION_FIRST_V1325':
+        if legacy:return Decision(False,'legacy mode cannot masquerade as Production First')
+        result=_production_flow_module().decide_next(plan,state,session_owner=session_owner)
+        if not result['allowed']:return Decision(False,result['reason'])
+        if result.get('needs_user'):return Decision(False,'WAITING_USER: '+result['reason'])
+        if result.get('next_task')!=task_id:return Decision(False,'only next scoped Production First task may run')
+        return Decision(True,'Production First task ready; no aesthetic Qxx gate')
     try:
         if not legacy:
             actual_tasks=validate_new_package(plan)
@@ -192,6 +211,16 @@ def _g14_verified(state:dict[str,Any]) -> bool:
 
 def validate_package_completion(plan:dict[str,Any],state:dict[str,Any]) -> Decision:
     """Precheck for PACKAGE_PASS; still call legacy transition after this returns True."""
+    if isinstance(plan,dict) and plan.get('execution_mode')=='PRODUCTION_FIRST_V1325':
+        # Do NOT call work_package_state.transition(..., PACKAGE_PASS) here:
+        # legacy transition requires QC and creative gates, while this mode's
+        # terminal is FINAL_REVIEW followed by the real user's acceptance.
+        if state.get('status') not in {'FINAL_REVIEW','PACKAGE_DONE'}:
+            return Decision(False,'Production First scoped stages are not complete')
+        staged={**state,'status':'RUNNING'}
+        result=_production_flow_module().decide_next(plan,staged,session_owner=state.get('lock_owner',''))
+        return Decision(result['allowed'] and result.get('next_task') is None,
+                        'all authorized stage artifacts complete, awaiting user review' if result['allowed'] and result.get('next_task') is None else result.get('reason','missing artifacts'))
     try:
         tasks=expand_tasks(plan)
         if (state.get('status') != 'RUNNING' or not state.get('approval_ref')
