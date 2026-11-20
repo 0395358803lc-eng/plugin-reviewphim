@@ -37,6 +37,7 @@ def plan(root, *,stages=('G01','G02','G03'), delegations=()):
       'install_budget':[],'human_gates':[],'creative_delegations':list(delegations),
       'expected_outputs':[],'acceptance_criteria':[],'stop_conditions':[],
       'stage_outputs':{s:['assets/youtube_thumbnail.png' if s=='G11B' else f'output/{s}.mp4' if s=='G15' else f'output/{s}.dat'] for s in stages},
+      'requires_audio':False,  # These codec fixtures deliberately contain silent video.
       'allowed_executables_and_models':['ffprobe','ffmpeg']}
 
 

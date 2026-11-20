@@ -3,7 +3,7 @@ name: producing-movie-review-videos
 description: Use when the user invokes REVIEW_PHIM, works with remote movie workspace/transcript/translation/audio, or produces Vietnamese movie recap videos G01–G15 including YouTube metadata, thumbnail and intro.
 ---
 
-# REVIEW_PHIM v1.3.26 — Production First → User Review → Targeted Revision
+# REVIEW_PHIM v1.3.27 — Production First → User Review → Targeted Revision
 
 Với gói mới đã duyệt `execution_mode=PRODUCTION_FIRST_V1325`, dùng duy nhất
 [PRODUCTION_FIRST_AUTONOMOUS_V1325](references/PRODUCTION_FIRST_AUTONOMOUS_V1325.md)
@@ -21,6 +21,8 @@ Một phê duyệt gói rõ phạm vi cho phép chạy các task liên tục b�
 Không dùng Q01–Q15, QC từng scene/beat/WAV/shot/clip/batch, web crosscheck bắt buộc,
 hay G14 ba trục làm điều kiện chuyển bước. Không tự mở gói sửa thẩm mỹ trước phản hồi.
 MP4 phải có container/video stream/duration hợp lệ và giải mã được bằng công cụ đã duyệt.
+`requires_audio` mặc định true: video thuyết minh phải có audio stream hợp lệ và giải mã được;
+video cố ý im lặng phải có hợp đồng false rõ ràng. Cache chỉ dùng lại bằng chứng file/công cụ không đổi.
 `technical_ready=True` không đủ. File bắt buộc thiếu hoặc hỏng → `FAILED`.
 `WARNING` ghi lại cho nghiệm thu cuối, không chặn sản xuất.
 

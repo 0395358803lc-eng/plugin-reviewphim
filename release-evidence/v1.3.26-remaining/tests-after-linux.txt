@@ -1,0 +1,38 @@
+Source: https://github.com/0395358803lc-eng/plugin-reviewphim/actions/runs/44700525759
+Commit: b28d990e7463205f2629dbebe4f15f966a6cf819
+Runner: Ubuntu 26.04.1, CPython 3.13.18
+
+2026-11-20T08:11:33.3301167Z ##[group]Run python -m pytest -q -rs skills/producing-movie-review-videos/tests
+2026-11-20T08:11:33.3301840Z python -m pytest -q -rs skills/producing-movie-review-videos/tests
+2026-11-20T08:11:33.3326647Z shell: /usr/bin/bash -e {0}
+2026-11-20T08:11:33.3326931Z env:
+2026-11-20T08:11:33.3327237Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-20T08:11:33.3327712Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+2026-11-20T08:11:33.3328151Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-20T08:11:33.3328544Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-20T08:11:33.3328936Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-20T08:11:33.3329330Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+2026-11-20T08:11:33.3329668Z ##[endgroup]
+2026-11-20T08:11:34.1399066Z ................................................................ [ 16%]
+2026-11-20T08:11:37.4239495Z ............................................................................................................................... [ 50%]
+2026-11-20T08:11:39.9120434Z ...................................s.................................... [ 68%]
+2026-11-20T08:11:39.9714176Z ........................................................................ [ 87%]
+2026-11-20T08:11:40.0373753Z ...............................................                          [100%]
+2026-11-20T08:11:40.0374896Z =========================== short test summary info ============================
+2026-11-20T08:11:40.0376538Z SKIPPED [1] skills/producing-movie-review-videos/tests/test_remaining_reliability_v1326.py:164: Windows junction semantics
+2026-11-20T08:11:40.0378384Z 381 passed, 1 skipped, 25 subtests passed in 6.40s
+2026-11-20T08:11:40.0875119Z ##[group]Run python -m pytest -q -k symlink --junitxml=symlink.xml skills/producing-movie-review-videos/tests
+2026-11-20T08:11:40.0875882Z python -m pytest -q -k symlink --junitxml=symlink.xml skills/producing-movie-review-videos/tests
+2026-11-20T08:11:40.0876899Z python -c "import xml.etree.ElementTree as E; s=list(E.parse('symlink.xml').getroot().iter('testcase')); assert len(s)==4 and all(x.find('skipped') is None and x.find('failure') is None and x.find('error') is None for x in s)"
+2026-11-20T08:11:40.0898777Z shell: /usr/bin/bash -e {0}
+2026-11-20T08:11:40.0899051Z env:
+2026-11-20T08:11:40.0899327Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-20T08:11:40.0899752Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+2026-11-20T08:11:40.0900374Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-20T08:11:40.0900754Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-20T08:11:40.0901175Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-20T08:11:40.0901700Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+2026-11-20T08:11:40.0902020Z ##[endgroup]
+2026-11-20T08:11:40.3985102Z ....                                                                     [100%]
+2026-11-20T08:11:40.3986024Z 4 passed, 378 deselected in 0.13s
+

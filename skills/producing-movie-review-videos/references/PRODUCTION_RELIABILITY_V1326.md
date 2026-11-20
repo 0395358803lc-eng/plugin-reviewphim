@@ -22,6 +22,34 @@ không rỗng, đường dẫn/hash; mọi MP4 phải qua FFprobe container/vide
 và FFmpeg giải mã toàn bộ video/audio. Không kiểm nội dung, mỹ thuật hay giọng.
 Không tin `technical_ready`, `lock_verified` hay boolean thumbnail từ executor.
 
+`requires_audio` mặc định là `true`. MP4 cố ý im lặng phải khai báo rõ
+`requires_audio: false` trong gói hoặc `media_contracts[relative_path]`.
+Hợp đồng từng file có thể thêm `expected_duration` và `duration_tolerance`
+(mặc định 0.25 giây). Khi bắt buộc âm thanh, phải có codec/sample rate/channel
+hợp lệ và FFmpeg giải mã được cả video lẫn audio bằng `-map 0:a`.
+Đây là kiểm tra file, không phải chấm giọng hoặc nhạc.
+
+Cache kiểm chứng ràng buộc đường dẫn thực, file ID, size, mtime/change time,
+SHA-256 và path/hash/version của FFprobe/FFmpeg. Mỗi lần dùng vẫn mở handle
+đọc mới để kiểm quyền và thông tin file. Windows dùng NTFS ChangeTime và USN
+nếu có; khi journal không hoạt động, file vừa đổi phải qua khoảng ổn định
+32 ms trước khi metadata được cache. Không bật journal hoặc đổi quyền máy.
+Thiếu metadata tin cậy thì hash/probe/decode lại. Nguồn được hash đầy đủ ở
+ranh giới run, resume, import và user review; giữa các quyết định chỉ dùng lại
+khi file không đổi. Bằng chứng media đã đóng dấu hash nằm trong completion
+cho phép resume ở tiến trình mới mà không decode lại. Cờ do executor gửi
+không đủ làm bằng chứng. File, công cụ hoặc bằng chứng thay đổi thì kiểm lại.
+
+Ledger mới dùng `project-flow-event.v3`: delta mỗi sự kiện, snapshot mỗi 32
+sự kiện và tại các trạng thái chờ/lỗi/bàn giao/nghiệm thu. Mỗi delta có hash
+state sau áp dụng, seq và previous_hash. Cold resume kiểm toàn bộ chuỗi một
+lần; lần đọc tiếp dùng head đã xác minh khi file identity/change metadata
+không đổi. Khóa ghi hệ điều hành bảo vệ từng append, tự nhả khi tiến trình
+chết; không thay khóa quyền `work_package.lock`. Ghi/fsync ledger trước
+snapshot nên snapshot lỗi vẫn phục hồi được. Tail ghi dở bị chặn, giữ nguyên
+bytes để kiểm tra, không tự truncate hoặc giả hoàn thành. Ledger v2 cũ đọc
+và append đúng v2, không sửa lịch sử; snapshot Legacy không tự chuyển đổi.
+
 `repair_budget` dùng `per_issue` tối đa 2, `total` tối đa 4, `allowed_kinds`
 liệt kê chính xác loại được phép: `transient`, `connection`, `missing_output`,
 `invalid_media`, `executor`. `permission` luôn dừng để host giải quyết quyền thật.

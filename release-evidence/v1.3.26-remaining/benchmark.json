@@ -1,0 +1,21 @@
+{
+  "fixture": "one 4 KiB output record added per event; checkpoint plus resume on every event",
+  "before": {
+    "events": 200,
+    "write_and_read_seconds": 131.70712290005758,
+    "cold_resume_seconds": 0.7540582000510767,
+    "warm_resume_seconds": 0.7473038999596611,
+    "ledger_bytes": 84169507,
+    "snapshot_bytes": 852388
+  },
+  "after": {
+    "events": 200,
+    "write_and_read_seconds": 10.070953099988401,
+    "cold_resume_seconds": 0.500160799943842,
+    "warm_resume_seconds": 0.0018038999987766147,
+    "ledger_bytes": 3711251,
+    "snapshot_bytes": 818284
+  },
+  "time_reduction_percent": 92.35352433624226,
+  "ledger_reduction_percent": 95.59074166847621
+}

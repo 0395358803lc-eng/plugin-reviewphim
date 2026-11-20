@@ -1,0 +1,11 @@
+.............................................................s.. [ 16%]
+.s.......s..........s.......................................................................................................... [ 50%]
+........................................................................ [ 68%]
+........................................................................ [ 87%]
+...............................................                          [100%]
+=========================== short test summary info ===========================
+SKIPPED [1] skills\producing-movie-review-videos\tests\test_manual_thumbnail_handoff_v1324.py:151: Windows account lacks symbolic-link privilege
+SKIPPED [1] skills\producing-movie-review-videos\tests\test_manual_thumbnail_handoff_v1324.py:211: Windows account lacks symbolic-link privilege
+SKIPPED [1] skills\producing-movie-review-videos\tests\test_media_evidence_handoff_v1320.py:87: symlink unavailable
+SKIPPED [1] skills\producing-movie-review-videos\tests\test_media_evidence_handoff_v1320.py:159: symlink unavailable
+378 passed, 4 skipped, 25 subtests passed in 9.00s

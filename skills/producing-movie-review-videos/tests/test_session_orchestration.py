@@ -19,5 +19,5 @@ class TestSessionOrchestration(unittest.TestCase):
  def test_version(self):
   for filename in ('plugin.json','.codex-plugin/plugin.json'):
    d=json.loads((R.parents[1]/filename).read_text('utf-8'))
-   self.assertEqual(d['version'],'1.3.26')
+   self.assertEqual(d['version'],'1.3.27')
 if __name__=='__main__': unittest.main()
