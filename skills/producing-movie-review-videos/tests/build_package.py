@@ -12,10 +12,11 @@ def hashfile(p):
  with p.open("rb") as f:
   for buf in iter(lambda:f.read(1024*1024),b""):h.update(buf)
  return h.hexdigest()
-files=[p for p in sorted(ROOT.rglob("*")) if p.is_file() and "__pycache__" not in p.parts and p.name not in ("PACKAGE_MANIFEST.json",)]
+files=[p for p in sorted(ROOT.rglob("*")) if p.is_file() and "__pycache__" not in p.parts and p.name not in ("CURRENT_PACKAGE_MANIFEST.json",)]
 assert len(files)>=9,files
 assert (ROOT/"SKILL.md") in files
 manifest={
+ "version":json.loads((ROOT.parents[1]/"plugin.json").read_text(encoding="utf-8"))["version"],
  "package":ROOT.name,
  "title":"Vietnamese Movie Review Production — reusable AI agent skill",
  "created_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),
@@ -23,7 +24,7 @@ manifest={
  "runtime":"portable documentation; external Windows/FFmpeg/TTS/Remotion runtime not embedded",
  "files":[{"path":p.relative_to(ROOT).as_posix(),"bytes":p.stat().st_size,"sha256":hashfile(p)} for p in files]
 }
-m=ROOT/"PACKAGE_MANIFEST.json"
+m=ROOT/"CURRENT_PACKAGE_MANIFEST.json"
 m.write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
 members=files+[m]
 with zipfile.ZipFile(OUT,"w",compression=zipfile.ZIP_DEFLATED,compresslevel=8,allowZip64=True) as z:

@@ -19,6 +19,7 @@ import copy
 import math
 import shutil
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 from typing import Callable, Any
@@ -41,18 +42,21 @@ STATUS={'PENDING','RUNNING','DONE','WARNING','FAILED','WAITING_USER',
 
 def _sibling(name):
     from importlib.util import module_from_spec, spec_from_file_location
+    shared=name in {'verification_cache_v1326','project_journal_v1326'}
+    key='_review_phim_'+hashlib.sha256(str(Path(__file__).parent.resolve()).encode()).hexdigest()[:12]+'_'+name
+    if shared and key in sys.modules:return sys.modules[key]
     spec=spec_from_file_location(name,Path(__file__).with_name(name+'.py'))
     module=module_from_spec(spec)
     spec.loader.exec_module(module)
+    if shared:sys.modules[key]=module
     return module
 
 
-def file_sha(path):
-    with Path(path).open('rb') as stream:
-        return hashlib.file_digest(stream,'sha256').hexdigest()
+def file_sha(path,*,force=False):
+    return _sibling('verification_cache_v1326').file_sha(path,force=force)
 
 
-def authenticate_context(plan,state,owner):
+def authenticate_context(plan,state,owner,*,force_source=False):
     validate_plan(plan)
     digest=hash_plan(plan)
     if not state.get('approval_ref') or any(state.get(k)!=digest for k in ('plan_hash','approved_plan_hash')):
@@ -63,17 +67,17 @@ def authenticate_context(plan,state,owner):
     if not owner or state.get('lock_owner')!=owner:raise ValueError('lock owner mismatch')
     _sibling('work_package_state').verify_lock(Path(plan['JOB_DIR'])/'logs'/'work_package.lock',
         owner=owner,package_id=plan['WORK_PACKAGE_ID'],plan_hash=digest,device_id=plan['deviceId'])
-    if plan['source_hash']!='UNKNOWN' and file_sha(plan['SOURCE_MOVIE'])!=plan['source_hash']:
+    if plan['source_hash']!='UNKNOWN' and file_sha(plan['SOURCE_MOVIE'],force=force_source)!=plan['source_hash']:
         raise ValueError('source file SHA256 mismatch')
     if state.get('unresolved_blockers'):raise ValueError('unresolved permission/technical blocker')
     ledger=Path(plan['JOB_DIR'])/'logs'/'project_flow_v1325.jsonl'
     if ledger.exists():
-        events=_events(plan['JOB_DIR'])
-        if events and state.get('ledger_seq',0)!=events[-1]['seq']:
+        head=_ledger_head(plan['JOB_DIR'])
+        if head['seq'] and state.get('ledger_seq',0)!=head['seq']:
             raise ValueError('state is stale; reload canonical project ledger before execution')
 
 
-def validate_media(plan,outputs):
+def validate_media(plan,outputs,*,prior_evidence=None):
     """Probe and fully decode MP4 bytes; no aesthetic/content judgement."""
     videos=[x for x in outputs if x['relative_path'].lower().endswith('.mp4')]
     if not videos:return []
@@ -85,27 +89,61 @@ def validate_media(plan,outputs):
         binary=shutil.which(candidates[0])
         if not binary:raise FileNotFoundError('approved '+name+' is unavailable; installation is not authorized')
         binaries[name]=binary
+    cache=_sibling('verification_cache_v1326')
+    tool_identity={name:cache.tool_identity(binary) for name,binary in binaries.items()}
     evidence=[]
     for item in videos:
         path=Path(plan['JOB_DIR'])/item['relative_path']
+        signature=cache.fingerprint(path)
+        if file_sha(path)!=item['sha256']:raise ValueError('MP4 SHA256 mismatch before verification')
+        contract=plan.get('media_contracts',{}).get(item['relative_path'],{})
+        requires_audio=contract.get('requires_audio',plan.get('requires_audio',True))
+        key=cache.digest({'file':signature,'sha256':item['sha256'],'tools':tool_identity})
+        cached=cache.media_get(key) if signature['reliable'] else None
+        if cached is None and signature['reliable']:
+            # Only caller-verified completion/ledger evidence is eligible here.
+            # Executor-supplied media flags are never passed as prior_evidence.
+            cached=next((e for e in (prior_evidence or []) if isinstance(e,dict) and cache.sealed_evidence(e)
+                and e.get('fingerprint')==signature and e.get('sha256')==item['sha256'] and e.get('tools')==tool_identity),None)
+        if cached:
+            _check_media_contract(cached,contract,requires_audio)
+            cache.stats['media_hits']+=1;evidence.append(copy.deepcopy(cached));continue
+        cache.stats['probe_runs']+=1
         probe=subprocess.run([binaries['ffprobe'],'-v','error','-protocol_whitelist','file,pipe',
             '-show_format','-show_streams','-of','json',str(path)],capture_output=True,text=True,timeout=120)
         if probe.returncode:raise ValueError('invalid MP4 container: '+probe.stderr[-1000:])
         info=json.loads(probe.stdout);fmt=info.get('format',{})
         duration=float(fmt.get('duration',0))
         streams=[s for s in info.get('streams',[]) if s.get('codec_type')=='video' and not s.get('disposition',{}).get('attached_pic')]
+        audio=[s for s in info.get('streams',[]) if s.get('codec_type')=='audio']
         if ('mp4' not in fmt.get('format_name','').split(',') or not math.isfinite(duration) or duration<=0
                 or not streams or any(not s.get('codec_name') or s.get('width',0)<=0 or s.get('height',0)<=0 for s in streams)):
             raise ValueError('MP4 requires container, positive duration and decodable video stream metadata')
+        report={'relative_path':item['relative_path'],'sha256':item['sha256'],
+            'duration':duration,'video_streams':streams,'audio_streams':audio,'format_name':fmt['format_name'],
+            'probe_exit':probe.returncode,'decode_exit':0,'decoder':binaries['ffmpeg'],
+            'fingerprint':signature,'tools':tool_identity,'verification_schema':'media-verification.v2'}
+        _check_media_contract(report,contract,requires_audio)
+        cache.stats['decode_runs']+=1
         decode=subprocess.run([binaries['ffmpeg'],'-nostdin','-v','error','-xerror',
             '-err_detect','explode','-protocol_whitelist','file,pipe','-i',str(path),
-            '-map','0:v','-map','0:a?','-f','null','-'],capture_output=True,text=True,timeout=3600)
+            '-map','0:v','-map','0:a' if requires_audio else '0:a?','-f','null','-'],capture_output=True,text=True,timeout=3600)
         if decode.returncode or decode.stderr.strip():raise ValueError('MP4 decode failed: '+decode.stderr[-1000:])
-        if file_sha(path)!=item['sha256']:raise ValueError('MP4 changed during verification')
-        evidence.append({'relative_path':item['relative_path'],'sha256':item['sha256'],
-            'duration':duration,'video_streams':streams,'format_name':fmt['format_name'],
-            'probe_exit':probe.returncode,'decode_exit':decode.returncode,'decoder':binaries['ffmpeg']})
+        if cache.fingerprint(path)!=signature or file_sha(path)!=item['sha256']:raise ValueError('MP4 changed during verification')
+        report['verification_sha256']=cache.digest(report)
+        cache.media_put(key,report);evidence.append(report)
     return evidence
+
+
+def _check_media_contract(evidence,contract,requires_audio):
+    if evidence.get('decode_exit')!=0 or evidence.get('probe_exit')!=0:raise ValueError('MP4 evidence invalid')
+    audio=evidence.get('audio_streams',[])
+    if requires_audio and (not audio or any(not s.get('codec_name') or int(s.get('sample_rate',0))<=0
+                                          or int(s.get('channels',0))<=0 for s in audio)):
+        raise ValueError('MP4 requires a valid audio stream')
+    expected=contract.get('expected_duration')
+    if expected is not None and abs(evidence['duration']-expected)>contract.get('duration_tolerance',0.25):
+        raise ValueError('MP4 duration differs from approved output contract')
 
 
 def hash_plan(plan:dict[str,Any])->str:
@@ -178,7 +216,16 @@ def validate_plan(plan:dict[str,Any])->list[str]:
             or repair['per_issue']>repair['total'] or not isinstance(repair.get('allowed_kinds',[]),list)):
         raise ValueError('invalid finite retry budget')
     if not isinstance(plan.get('allowed_executables_and_models'),list):raise ValueError('approved executables required')
+    if type(plan.get('requires_audio',True)) is not bool:raise ValueError('requires_audio must be boolean')
+    contracts=plan.get('media_contracts',{})
+    if not isinstance(contracts,dict):raise ValueError('invalid media contracts')
     all_outputs=[p for paths in outs.values() for p in paths]
+    for name,contract in contracts.items():
+        if name not in all_outputs or not name.lower().endswith('.mp4') or not isinstance(contract,dict):raise ValueError('unscoped media contract')
+        if type(contract.get('requires_audio',plan.get('requires_audio',True))) is not bool:raise ValueError('invalid audio contract')
+        for field in ('expected_duration','duration_tolerance'):
+            if field in contract and (type(contract[field]) not in (int,float) or not math.isfinite(contract[field]) or contract[field]<0):
+                raise ValueError('invalid duration contract')
     if len(all_outputs)!=len(set(all_outputs)):raise ValueError('stages must not overwrite another stage output')
     if any(p.casefold().startswith('logs/') or (job/p).resolve(strict=False)==source for p in all_outputs):
         raise ValueError('stage output would overwrite source or control files')
@@ -241,10 +288,7 @@ def validate_artifacts(job_dir:str|Path, outputs:list[dict[str,Any]], required:l
             if root not in real.parents:return {'ok':False,'reason':'output escapes job root'}
             if real.stat().st_size==0:return {'ok':False,'reason':'empty output '+rel}
             if not isinstance(digest,str) or len(digest)!=64:return {'ok':False,'reason':'missing output SHA256'}
-            h=hashlib.sha256()
-            with real.open('rb') as f:
-                for buf in iter(lambda:f.read(1048576),b''):h.update(buf)
-            if h.hexdigest()!=digest:return {'ok':False,'reason':'output SHA256 mismatch '+rel}
+            if file_sha(real)!=digest:return {'ok':False,'reason':'output SHA256 mismatch '+rel}
         if not set(required)<=set(names):return {'ok':False,'reason':'required output missing'}
         if set(names)-set(required):return {'ok':False,'reason':'output outside approved stage contract'}
         return {'ok':True,'reason':'required artifacts exist, readable as bytes and SHA256 matched'}
@@ -294,6 +338,7 @@ def verify_completion(plan,state,stage,record):
             if not any(e.get('relative_path')==item['relative_path'] and e.get('sha256')==item['sha256']
                        and e.get('decode_exit')==0 and e.get('probe_exit')==0 for e in record.get('media_evidence',[])):
                 raise ValueError('verified decoder evidence missing')
+    validate_media(plan,record['outputs'],prior_evidence=record.get('media_evidence'))
 
 
 def decide_next(plan,state,*,session_owner):
@@ -347,50 +392,25 @@ def _write_checkpoint(root,state):
     os.replace(name,target)
 
 
-def _events(root):
+def _ledger_head(root,*,audit=False):
     ledger=_control_root(root)/'project_flow_v1325.jsonl'
-    if not ledger.exists():return []
-    events=[]
-    for line in ledger.read_text(encoding='utf-8').splitlines():
-        event=json.loads(line)
-        if event.get('schema')!='project-flow-event.v2':
-            raise ValueError('legacy ledger is read-only; use a new approved JOB_DIR')
-        if event.get('seq')!=len(events)+1 or event.get('previous_hash')!=(events[-1]['event_hash'] if events else None):
-            raise ValueError('ledger sequence mismatch')
-        raw={k:v for k,v in event.items() if k!='event_hash'}
-        if hash_plan(raw)!=event.get('event_hash'):raise ValueError('ledger hash mismatch')
-        events.append(event)
-    return events
+    return _sibling('project_journal_v1326').head(ledger,_sibling('verification_cache_v1326').fingerprint,audit=audit)
+
+
+def _events(root):
+    return copy.deepcopy(_ledger_head(root)['events'])
 
 
 def checkpoint(root,state,*,event='CHECKPOINT',details=None):
-    """Write-ahead append-only state event, then replace the disposable snapshot.
-
-    An interrupted snapshot write replays the durable event. A partial ledger
-    line fails closed and is never truncated or repaired behind the user's back.
-    """
+    """New ledgers use v3 deltas; existing v2 histories remain v2."""
     logs=_control_root(root);logs.mkdir(parents=True,exist_ok=True)
-    events=_events(root)
-    if not events and (logs/'project_flow_v1325.json').exists():
-        raise ValueError('snapshot without canonical ledger is read-only; do not migrate legacy state')
-    if events and state.get('ledger_seq',0)!=events[-1]['seq']:
-        raise ValueError('stale state; reload canonical ledger before writing')
-    state['ledger_seq']=len(events)+1
-    state['state_schema']='project-flow.v2'
-    entry={'schema':'project-flow-event.v2','seq':state['ledger_seq'],
-        'previous_hash':events[-1]['event_hash'] if events else None,
-        'timestamp':datetime.now(timezone.utc).isoformat(),'event':event,
-        'state':copy.deepcopy(state),'details':details or {}}
-    entry['event_hash']=hash_plan(entry)
-    with (logs/'project_flow_v1325.jsonl').open('a',encoding='utf-8') as stream:
-        stream.write(json.dumps(entry,ensure_ascii=False,sort_keys=True,allow_nan=False)+'\n')
-        stream.flush();os.fsync(stream.fileno())
-    _write_checkpoint(root,state)
+    _sibling('project_journal_v1326').append(logs,state,event,details,
+        _sibling('verification_cache_v1326').fingerprint,lambda current:_write_checkpoint(root,current))
 
 
 def read_checkpoint(job_dir):
-    events=_events(job_dir)
-    if events:return copy.deepcopy(events[-1]['state'])
+    head=_ledger_head(job_dir)
+    if head['seq']:return copy.deepcopy(head['state'])
     state=json.loads((_control_root(job_dir)/'project_flow_v1325.json').read_text(encoding='utf-8'))
     if state.get('ledger_seq'):raise ValueError('canonical ledger missing')
     return state
@@ -458,6 +478,8 @@ def recover_interrupted(plan,state,*,session_owner,recovery_ref,verify_inactive,
 def run_until_hinge(plan,state,executor,*,session_owner,persist=False,max_steps=None,auto_retry=True):
     """Finite synchronous host callback loop; never a background ChatGPT worker."""
     validate_plan(plan)
+    try:authenticate_context(plan,state,session_owner,force_source=True)
+    except (ValueError,OSError) as exc:return {**state,'last_blocker':str(exc)}
     if not callable(executor):raise ValueError('real authorized executor callback required')
     if max_steps is not None and (type(max_steps) is not int or max_steps<1):raise ValueError('positive max_steps required')
     s=copy.deepcopy(state);s.setdefault('stage_completions',{});s.setdefault('quality_qc_invocations',0)
@@ -479,7 +501,7 @@ def run_until_hinge(plan,state,executor,*,session_owner,persist=False,max_steps=
             s.update(status='FINAL_REVIEW' if 'G15' in plan['allowed_stages'] else 'PACKAGE_DONE',next_stage=None)
             s['project_status']='PROJECT_FINAL_REVIEW' if s['status']=='FINAL_REVIEW' else 'PACKAGE_DONE'
             if s['status']=='FINAL_REVIEW':
-                try:validate_media(plan,s['stage_completions']['G15']['outputs'])
+                try:validate_media(plan,s['stage_completions']['G15']['outputs'],prior_evidence=s['stage_completions']['G15'].get('media_evidence'))
                 except (OSError,ValueError,subprocess.SubprocessError) as exc:
                     return _failure(plan,s,'G15',str(exc),'invalid_media',persist)
                 s['delivery']={'WORK_PACKAGE_ID':plan['WORK_PACKAGE_ID'],'plan_hash':hash_plan(plan),
@@ -558,7 +580,7 @@ def run_until_hinge(plan,state,executor,*,session_owner,persist=False,max_steps=
 
 
 def resume_after_user(plan,state,*,action,user_ref,evidence=None,persist=False,session_owner=None):
-    authenticate_context(plan,state,session_owner or state.get('lock_owner'))
+    authenticate_context(plan,state,session_owner or state.get('lock_owner'),force_source=True)
     if state.get('status')!='WAITING_USER' or not isinstance(user_ref,str) or not user_ref.strip():
         raise ValueError('matching user wait and authentic user reference required')
     if action!=state.get('wait_reason'):raise ValueError('user action does not resolve the waiting reason')
@@ -592,13 +614,13 @@ def resume_after_user(plan,state,*,action,user_ref,evidence=None,persist=False,s
 
 
 def user_review(plan,state,*,action,user_ref,notes,targets=None,persist=False,session_owner=None):
-    authenticate_context(plan,state,session_owner or state.get('lock_owner'))
+    authenticate_context(plan,state,session_owner or state.get('lock_owner'),force_source=True)
     if 'G15' not in plan['allowed_stages'] or state.get('status')!='FINAL_REVIEW' or not isinstance(user_ref,str) or not user_ref.strip():
         raise ValueError('final review and authentic user message required')
     if action not in {'ACCEPTED','REVISION_REQUESTED'}:raise ValueError('unknown review decision')
     decision=decide_next(plan,{**state,'status':'RUNNING'},session_owner=state['lock_owner'])
     if not decision.get('allowed') or decision.get('next_stage') is not None:raise ValueError('delivery evidence is no longer valid')
-    validate_media(plan,state['stage_completions']['G15']['outputs'])
+    validate_media(plan,state['stage_completions']['G15']['outputs'],prior_evidence=state['stage_completions']['G15'].get('media_evidence'))
     out=copy.deepcopy(state);out['status']=action;out['project_status']=action
     review={'user_ref':user_ref,'notes':notes,'delivery':copy.deepcopy(state['delivery'])}
     if action=='ACCEPTED':out['acceptance']=review
@@ -613,7 +635,7 @@ def user_review(plan,state,*,action,user_ref,notes,targets=None,persist=False,se
 
 
 def merge_verified_completions(plan,state,previous,*,expected_inputs,session_owner=None,persist=False):
-    authenticate_context(plan,state,session_owner or state.get('lock_owner'))
+    authenticate_context(plan,state,session_owner or state.get('lock_owner'),force_source=True)
     if state.get('status')!='RUNNING' or not isinstance(previous,dict):raise ValueError('authorized running package required')
     out=copy.deepcopy(state);out.setdefault('stage_completions',{})
     for stage in plan['allowed_stages']:
@@ -622,7 +644,7 @@ def merge_verified_completions(plan,state,previous,*,expected_inputs,session_own
         record=previous[stage]
         verify_completion(plan,out,stage,record)
         if record.get('inputs')!=expected_inputs.get(stage):raise ValueError('changed or unknown input hashes')
-        media=validate_media(plan,record['outputs'])
+        media=validate_media(plan,record['outputs'],prior_evidence=record.get('media_evidence'))
         adopted=copy.deepcopy(record)
         adopted.update(WORK_PACKAGE_ID=plan['WORK_PACKAGE_ID'],approval_ref=state['approval_ref'],plan_hash=hash_plan(plan),
             imported_from_package=record['WORK_PACKAGE_ID'],imported_approval_ref=record['approval_ref'],
@@ -653,6 +675,8 @@ def propose_revision(plan,state):
     new['revision_request']=copy.deepcopy(request)
     for stage in request['affected_stages']:
         new['stage_outputs'][stage]=['revisions/r'+str(number)+'/'+p for p in plan['stage_outputs'][stage]]
+        for old_path,new_path in zip(plan['stage_outputs'][stage],new['stage_outputs'][stage]):
+            if old_path in new.get('media_contracts',{}):new['media_contracts'][new_path]=new['media_contracts'].pop(old_path)
         if stage in new.get('stage_proposals',{}):
             new['stage_proposals'][stage]=['revisions/r'+str(number)+'/'+p for p in plan['stage_proposals'][stage]]
     validate_plan(new)

@@ -41,6 +41,6 @@ The legacy QC-based workflow remains available for existing projects unless expl
 
 ## Source hygiene
 
-Only source files are tracked here, excluding `__pycache__`, `*.pyc`, and `.pytest_cache`. `skills/producing-movie-review-videos/PACKAGE_MANIFEST.json` is a **changed-files overlay manifest** retained verbatim from the plugin; it is not a full repository checksum manifest.
+Only source files are tracked here, excluding `__pycache__`, `*.pyc`, and `.pytest_cache`. `skills/producing-movie-review-videos/history/PACKAGE_MANIFEST_V1325.json` is the **historical 1.3.25 changed-files overlay**, retained byte-for-byte; it is not a current repository checksum manifest.
 
 [Original ChatGPT plugin](https://chatgpt.com/plugins/plugins_6afb6aad3c788191aa502d68b438c937).
